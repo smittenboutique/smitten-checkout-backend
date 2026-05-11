@@ -23,12 +23,16 @@ public class CheckoutController {
     }
 
     @PostMapping("/api/create-checkout")
-    @ResponseBody
-    public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
+@ResponseBody
+public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
 
-        Map<String, Object> result = new HashMap<>();
+    Map<String, Object> result = new HashMap<>();
 
-        try {
+    List<Map<String, Object>> items =
+            (List<Map<String, Object>>) body.get("items");
+
+    try {
+        // you’ll build Square order from "items" next
             result.put("success", true);
             result.put("checkout_url", "https://squareup.com/checkout/test");
 
