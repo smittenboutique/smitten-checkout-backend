@@ -68,25 +68,16 @@ function render() {
 }
 
 document.getElementById("continue").onclick = async () => {
-    try {
+    const res = await fetch("/api/create-checkout", {
+        method: "POST"
+    });
 
-        const res = await fetch("/api/create-checkout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+    const data = await res.json();
 
-        const data = await res.json();
-
-        if (data.success) {
-            window.location.href = data.checkout_url;
-        } else {
-            alert("Checkout failed: " + data.error);
-        }
-
-    } catch (err) {
-        alert("Network error: " + err.message);
+    if (data.success) {
+        window.location.href = data.checkout_url;
+    } else {
+        alert("Checkout failed");
     }
 };
 
