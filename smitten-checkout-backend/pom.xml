@@ -46,6 +46,11 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    		<groupId>com.squareup</groupId>
+    		<artifactId>square</artifactId>
+   			 <version>41.0.0.20250416</version>
+		</dependency>
 	</dependencies>
 
 	<build>
