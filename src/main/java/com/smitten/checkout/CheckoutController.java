@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.squareup.square.client.SquareClient;
+import com.squareup.square.SquareClient;
+import com.squareup.square.Environment;
 
 @Controller
 public class CheckoutController {
