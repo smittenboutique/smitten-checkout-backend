@@ -68,20 +68,32 @@ function render() {
 }
 
 document.getElementById("continue").onclick = async () => {
-    const res = await fetch("/api/create-checkout", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ items })
-});
 
-    const data = await res.json();
+    console.log("Checkout clicked");
 
-    if (data.success) {
-        window.location.href = data.checkout_url;
-    } else {
-        alert("Checkout failed");
+    try {
+        const res = await fetch("/api/create-checkout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ items })
+        });
+
+        console.log("Response status:", res.status);
+
+        const data = await res.json();
+
+        console.log("Response:", data);
+
+        if (data.success) {
+            window.location.href = data.checkout_url;
+        } else {
+            alert("Checkout failed");
+        }
+
+    } catch (err) {
+        console.error("Checkout error:", err);
     }
 };
 
