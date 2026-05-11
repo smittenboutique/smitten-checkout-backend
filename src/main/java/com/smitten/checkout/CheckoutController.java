@@ -10,40 +10,43 @@ import java.util.*;
 
 @Controller
 public class CheckoutController {
-System.out.println("HIT createCheckout");
-    // -------------------------
-    // UI PAGE
-    // -------------------------
-    @GetMapping("/fbcheckout")
-    public String fbcheckout() {
-        return "fbcheckout";
-    }
 
-    // -------------------------
+    // -----------------------
     // HEALTH CHECK
-    // -------------------------
+    // -----------------------
     @GetMapping("/api/health")
     @ResponseBody
     public Map<String, Object> health() {
         return Map.of("status", "ok");
     }
 
-    // -------------------------
-    // PRODUCT LOOKUP
-    // -------------------------
+    // -----------------------
+    // FRONTEND PAGE
+    // -----------------------
+    @GetMapping("/fbcheckout")
+    public String fbcheckout() {
+        return "fbcheckout";
+    }
+
+    // -----------------------
+    // PRODUCT (TEMP MOCK SAFE)
+    // Replace later with Square Catalog API
+    // -----------------------
     @GetMapping("/api/product")
     @ResponseBody
     public Map<String, Object> getProduct(@RequestParam String id) {
+
         Map<String, Object> product = new HashMap<>();
         product.put("id", id);
-        product.put("name", "Mock Product");
+        product.put("name", "Smitten Product " + id);
         product.put("image", "https://via.placeholder.com/50");
+
         return product;
     }
 
-    // -------------------------
-    // CREATE CHECKOUT (REAL API)
-    // -------------------------
+    // -----------------------
+    // CREATE CHECKOUT (SQUARE PAYMENT LINKS)
+    // -----------------------
     @PostMapping("/api/create-checkout")
     @ResponseBody
     public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
@@ -55,9 +58,10 @@ System.out.println("HIT createCheckout");
             String locationId = System.getenv("SQUARE_LOCATION_ID");
 
             if (token == null || locationId == null) {
-                throw new RuntimeException("Missing Square env vars");
+                throw new RuntimeException("Missing Square environment variables");
             }
 
+            // Build simple line item (safe baseline)
             List<Map<String, Object>> items =
                     (List<Map<String, Object>>) body.get("items");
 
@@ -120,5 +124,4 @@ System.out.println("HIT createCheckout");
 
         return result;
     }
-}
 }
