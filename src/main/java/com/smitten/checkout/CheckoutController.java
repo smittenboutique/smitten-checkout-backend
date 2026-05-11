@@ -24,7 +24,7 @@ public class CheckoutController {
 
     @PostMapping("/api/create-checkout")
     @ResponseBody
-    public Map<String, Object> createCheckout() {
+    public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
 
         Map<String, Object> result = new HashMap<>();
 
