@@ -19,7 +19,49 @@ public class CheckoutController {
         return res;
     }
 
-    @GetMapping("/api/product")
+@GetMapping("/api/product")
+@ResponseBody
+public Map<String, Object> getProduct(@RequestParam String id) throws Exception {
+
+    String accessToken = System.getenv("SQUARE_ACCESS_TOKEN");
+
+    com.squareup.square.SquareClient client =
+        new com.squareup.square.SquareClient.Builder()
+            .environment(com.squareup.square.Environment.SANDBOX)
+            .bearerAuthCredentials(
+                new com.squareup.square.authentication.BearerAuthModel.Builder(accessToken).build()
+            )
+            .build();
+
+    var response = client.catalogApi().retrieveCatalogObject(id, true);
+
+    var obj = response.getResult().getObject();
+
+    Map<String, Object> product = new HashMap<>();
+
+    product.put("id", obj.getId());
+    product.put("name", obj.getItemData().getName());
+
+    String imageUrl = "";
+
+    if (obj.getItemData().getImageIds() != null &&
+        !obj.getItemData().getImageIds().isEmpty()) {
+
+        String imageId = obj.getItemData().getImageIds().get(0);
+
+        var imageResponse = client.catalogApi()
+            .retrieveCatalogObject(imageId, false);
+
+        imageUrl = imageResponse.getResult()
+            .getObject()
+            .getImageData()
+            .getUrl();
+    }
+
+    product.put("image", imageUrl);
+
+    return product;
+}
     @ResponseBody
     public Map<String, Object> getProduct(@RequestParam String id) {
         Map<String, Object> product = new HashMap<>();
