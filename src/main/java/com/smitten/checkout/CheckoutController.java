@@ -10,7 +10,7 @@ import java.util.*;
 
 @Controller
 public class CheckoutController {
-
+System.out.println("HIT createCheckout");
     // -------------------------
     // UI PAGE
     // -------------------------
