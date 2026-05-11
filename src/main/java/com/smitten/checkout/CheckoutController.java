@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.squareup.square.SquareClient;
+import com.squareup.square.environment.SquareEnvironment;
+
 @Controller
 public class CheckoutController {
 
@@ -29,6 +32,33 @@ public class CheckoutController {
         return product;
     }
 
+    @GetMapping("/api/square-test")
+@ResponseBody
+public Map<String, Object> squareTest() {
+
+    Map<String, Object> result = new HashMap<>();
+
+    try {
+
+        String token = System.getenv("SQUARE_ACCESS_TOKEN");
+
+        SquareClient client = new SquareClient.Builder()
+                .environment(SquareEnvironment.SANDBOX)
+                .token(token)
+                .build();
+
+        result.put("success", true);
+        result.put("message", "Square client initialized");
+
+    } catch (Exception e) {
+
+        result.put("success", false);
+        result.put("error", e.getMessage());
+    }
+
+    return result;
+}
+    
     @GetMapping("/fbcheckout")
     public String fbcheckout() {
         return "fbcheckout";
