@@ -94,7 +94,12 @@ public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body)
         );
 
         Map responseBody = response.getBody();
-        Map paymentLink = (Map) responseBody.get("payment_link");
+
+if (responseBody == null || responseBody.get("payment_link") == null) {
+    throw new RuntimeException("Square returned invalid response: " + responseBody);
+}
+
+Map paymentLink = (Map) responseBody.get("payment_link");
 
         result.put("success", true);
         result.put("checkout_url", paymentLink.get("url"));
