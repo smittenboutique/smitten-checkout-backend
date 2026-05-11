@@ -16,7 +16,7 @@
 <div id="status">Loading...</div>
 <div id="items"></div>
 
-<button id="continue" disabled>Continue to Checkout</button>
+<button id="continue">Continue to Checkout</button>
 
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -67,8 +67,27 @@ function render() {
     document.getElementById("continue").disabled = false;
 }
 
-document.getElementById("continue").onclick = () => {
-    alert("Next step: Square checkout integration");
+document.getElementById("continue").onclick = async () => {
+    try {
+
+        const res = await fetch("/api/create-checkout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            window.location.href = data.checkout_url;
+        } else {
+            alert("Checkout failed: " + data.error);
+        }
+
+    } catch (err) {
+        alert("Network error: " + err.message);
+    }
 };
 
 load();
