@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.squareup.square.SquareClient;
-import com.squareup.square.Environment;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class CheckoutController {
@@ -32,7 +32,7 @@ public class CheckoutController {
         return product;
     }
 
-    @GetMapping("/api/square-test")
+  @GetMapping("/api/square-test")
 @ResponseBody
 public Map<String, Object> squareTest() {
 
@@ -42,13 +42,24 @@ public Map<String, Object> squareTest() {
 
         String token = System.getenv("SQUARE_ACCESS_TOKEN");
 
-        SquareClient client = new SquareClient.Builder()
-        .environment(Environment.SANDBOX)
-        .accessToken(token)
-        .build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = "https://connect.squareupsandbox.com/v2/catalog/list";
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
 
         result.put("success", true);
-        result.put("message", "Square client initialized");
+        result.put("status", response.getStatusCode().toString());
 
     } catch (Exception e) {
 
