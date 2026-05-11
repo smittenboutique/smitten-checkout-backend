@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .item { display:flex; gap:12px; margin-bottom:12px; align-items:center; }
+        img { width:50px; height:50px; }
+        button { margin-top:20px; padding:10px 16px; }
+    </style>
+</head>
+
+<body>
+
+<h2>Your Cart</h2>
+<div id="status">Loading...</div>
+<div id="items"></div>
+
+<button id="continue" disabled>Continue to Checkout</button>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const rawProducts = params.get("products");
+
+let items = [];
+
+async function load() {
+    if (!rawProducts) {
+        document.getElementById("status").innerText = "No items found.";
+        return;
+    }
+
+    const entries = rawProducts.split(",");
+
+    for (const entry of entries) {
+        const [id, qty] = entry.split(":");
+
+        const res = await fetch(`/api/product?id=${id}`);
+        const data = await res.json();
+
+        items.push({ id, qty, name: data.name, image: data.image });
+    }
+
+    render();
+}
+
+function render() {
+    const container = document.getElementById("items");
+    container.innerHTML = "";
+
+    items.forEach(i => {
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+            <img src="${i.image}" />
+            <div>
+                <div><b>${i.name}</b></div>
+                <div>Qty: ${i.qty}</div>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+
+    document.getElementById("status").innerText = "Ready to checkout";
+    document.getElementById("continue").disabled = false;
+}
+
+document.getElementById("continue").onclick = () => {
+    alert("Next step: Square checkout integration");
+};
+
+load();
+</script>
+
+</body>
+</html>
