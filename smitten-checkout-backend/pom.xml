@@ -47,15 +47,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-    		<groupId>com.squareup</groupId>
-    		<artifactId>square</artifactId>
-   			 <version>41.0.0.20250416</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.squareup</groupId>
-    		<artifactId>square</artifactId>
-    		<version>43.0.0.20260504</version>
-		</dependency>
+    <groupId>com.squareup</groupId>
+    <artifactId>square</artifactId>
+    <version>43.1.0.20250220</version>
+</dependency>
 	</dependencies>
 
 	<build>
