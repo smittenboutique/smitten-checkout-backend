@@ -26,3 +26,15 @@ public class CheckoutController {
         return product;
     }
 }
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class CheckoutPageController {
+
+    @GetMapping("/fbcheckout")
+    public String fbcheckout() {
+        return "fbcheckout";
+    }
+}
