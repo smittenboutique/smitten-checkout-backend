@@ -33,6 +33,7 @@ public class CheckoutController {
 
     @PostMapping("/api/create-checkout")
 @ResponseBody
+    System.out.println("CREATE CHECKOUT HIT");
 public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
 
     Map<String, Object> result = new HashMap<>();
