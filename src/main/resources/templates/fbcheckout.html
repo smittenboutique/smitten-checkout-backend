@@ -67,7 +67,8 @@ function render() {
     document.getElementById("continue").disabled = false;
 }
 
-document.getElementById("continue").onclick = async () => {
+document.getElementById("continue").onclick = async (e) => {
+    e.preventDefault();
 
     console.log("Checkout clicked");
 
@@ -77,23 +78,16 @@ document.getElementById("continue").onclick = async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ items })
+            body: JSON.stringify({ items: [] }) // safe test payload
         });
 
-        console.log("Response status:", res.status);
+        console.log("Status:", res.status);
 
         const data = await res.json();
-
         console.log("Response:", data);
 
-        if (data.success) {
-            window.location.href = data.checkout_url;
-        } else {
-            alert("Checkout failed");
-        }
-
     } catch (err) {
-        console.error("Checkout error:", err);
+        console.error("Checkout failed:", err);
     }
 };
 
