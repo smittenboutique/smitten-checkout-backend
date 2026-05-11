@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.squareup.square.SquareClient;
-import com.squareup.square.environment.SquareEnvironment;
+import com.squareup.square.client.SquareClient;
 
 @Controller
 public class CheckoutController {
@@ -43,7 +42,6 @@ public Map<String, Object> squareTest() {
         String token = System.getenv("SQUARE_ACCESS_TOKEN");
 
         SquareClient client = new SquareClient.Builder()
-                .environment(SquareEnvironment.SANDBOX)
                 .token(token)
                 .build();
 
