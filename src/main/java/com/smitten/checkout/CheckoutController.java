@@ -43,8 +43,9 @@ public Map<String, Object> squareTest() {
         String token = System.getenv("SQUARE_ACCESS_TOKEN");
 
         SquareClient client = new SquareClient.Builder()
-                .token(token)
-                .build();
+        .environment(Environment.SANDBOX)
+        .accessToken(token)
+        .build();
 
         result.put("success", true);
         result.put("message", "Square client initialized");
