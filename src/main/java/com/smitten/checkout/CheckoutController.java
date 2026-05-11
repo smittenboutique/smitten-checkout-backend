@@ -28,19 +28,13 @@ public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body)
 
     Map<String, Object> result = new HashMap<>();
 
-    List<Map<String, Object>> items =
-            (List<Map<String, Object>>) body.get("items");
+    List<Map<String, Object>> items = null;
 
-    try {
-        // you’ll build Square order from "items" next
-            result.put("success", true);
-            result.put("checkout_url", "https://squareup.com/checkout/test");
-
-        } catch (Exception e) {
-            result.put("success", false);
-            result.put("error", e.getMessage());
-        }
-
-        return result;
-    }
+try {
+    items = (List<Map<String, Object>>) body.get("items");
+} catch (Exception e) {
+    result.put("success", false);
+    result.put("error", "Invalid cart format");
+    return result;
+}
 }
