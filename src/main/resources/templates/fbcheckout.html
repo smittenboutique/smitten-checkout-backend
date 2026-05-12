@@ -16,22 +16,44 @@
 <div id="status">Loading...</div>
     
 <div id="items"></div>
-    <button onclick="addToCart({id:'ring', name:'Gold Ring', qty:1, price:2500})">
-        Add Ring
-    </button>
+    <button onclick="addToCart({
+    id:'ring',
+    name:'Gold Ring',
+    price:2500
+})">
+    Add Ring
+</button>
 
-    <button onclick="addToCart({id:'necklace', name:'Necklace', qty:1, price:5000})">
-        Add Necklace
-    </button>
+<button onclick="addToCart({
+    id:'necklace',
+    name:'Necklace',
+    price:5000
+})">
+    Add Necklace
+</button>
     
 <button id="continue">Continue to Checkout</button>
 
 <script>
     let cart = [];
     function addToCart(item) {
-        cart.push(item);
-        renderCart();
+
+    const existing = cart.find(i => i.id === item.id);
+
+    if (existing) {
+
+        existing.qty += 1;
+
+    } else {
+
+        cart.push({
+            ...item,
+            qty: 1
+        });
     }
+
+    renderCart();
+}
     function renderCart() {
     const container = document.getElementById("items");
     container.innerHTML = "";
@@ -43,9 +65,30 @@
         div.innerHTML = `
             <div>
                 <b>${i.name}</b><br/>
-                Qty: ${i.qty} • $${(i.price / 100).toFixed(2)}
+                $${(i.price / 100).toFixed(2)}
             </div>
-            <button onclick="removeItem(${index})">Remove</button>
+            <div>
+    <button onclick="decreaseQty(${index})">-</button>
+    <span style="margin:0 8px;">${i.qty}</span>
+    <button onclick="increaseQty(${index})">+</button>
+</div>
+function increaseQty(index) {
+
+    cart[index].qty += 1;
+
+    renderCart();
+}
+
+function decreaseQty(index) {
+
+    cart[index].qty -= 1;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    renderCart();
+}
         `;
 
         container.appendChild(div);
