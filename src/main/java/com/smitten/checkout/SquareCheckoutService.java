@@ -9,6 +9,36 @@ import java.util.*;
 @Service
 public class SquareCheckoutService {
 
+    public Map<String, Object> getCatalog() {
+
+    Map<String, Object> result = new HashMap<>();
+
+    try {
+        String token = System.getenv("SQUARE_ACCESS_TOKEN");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = "https://connect.squareupsandbox.com/v2/catalog/list";
+
+        ResponseEntity<Map> response =
+                restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
+        result.put("success", true);
+        result.put("objects", response.getBody().get("objects"));
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", e.getMessage());
+        }
+
+        return result;
+    }
+    
     public Map<String, Object> createCheckout(Map<String, Object> body) {
 
         Map<String, Object> result = new HashMap<>();
