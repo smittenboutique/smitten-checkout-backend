@@ -67,10 +67,9 @@ function render() {
     document.getElementById("continue").disabled = false;
 }
 
-document.getElementById("continue").onclick = async (e) => {
-    e.preventDefault();
+document.getElementById("continue").onclick = async () => {
 
-    console.log("Checkout clicked");
+    console.log("BUTTON CLICKED");
 
     try {
         const res = await fetch("/api/create-checkout", {
