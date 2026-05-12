@@ -16,13 +16,14 @@
 <div id="status">Loading...</div>
     
 <div id="items"></div>
-<button onclick="addToCart({catalog_object_id:'SQUARE_ID_RING'})">
-    Add Ring
-</button>
 
-<button onclick="addToCart({catalog_object_id:'SQUARE_ID_NECKLACE'})">
+    <button onclick="addToCart({catalog_object_id:'REAL_VARIATION_ID_1'})">
+    Add Ring
+    </button>
+
+    <button onclick="addToCart({catalog_object_id:'REAL_VARIATION_ID_2'})">
     Add Necklace
-</button>
+    </button>
     
 <button id="continue">Continue to Checkout</button>
 
@@ -62,7 +63,7 @@ function renderCart() {
 
         div.innerHTML = `
             <div>
-                <b>${i.catalog_object_id}</b><br/>
+                <b>${i.catalog_object_id.slice(0,8)}...</b><br/>
                 Qty: ${i.qty}
             </div>
 
@@ -103,7 +104,10 @@ function decreaseQty(index) {
 }
 
 document.getElementById("continue").onclick = async () => {
-
+if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+}
     console.log("BUTTON CLICKED");
 
     try {
