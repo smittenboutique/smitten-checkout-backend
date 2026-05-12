@@ -29,20 +29,62 @@ public class CheckoutController {
     }
 
     // -----------------------
-    // PRODUCT (TEMP MOCK SAFE)
-    // Replace later with Square Catalog API
+    // PRODUCT Square Catalog API
     // -----------------------
     @GetMapping("/api/product")
-    @ResponseBody
-    public Map<String, Object> getProduct(@RequestParam String id) {
+@ResponseBody
+public Map<String, Object> getProduct(@RequestParam String id) {
 
-        Map<String, Object> product = new HashMap<>();
-        product.put("id", id);
-        product.put("name", "Smitten Product " + id);
-        product.put("image", "https://via.placeholder.com/50");
+    Map<String, Object> product = new HashMap<>();
 
-        return product;
+    try {
+
+        String token = System.getenv("SQUARE_ACCESS_TOKEN");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<String> entity =
+                new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url =
+                "https://connect.squareupsandbox.com/v2/catalog/object/" + id;
+
+        ResponseEntity<Map> response =
+                restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        entity,
+                        Map.class
+                );
+
+        Map object =
+                (Map) response.getBody().get("object");
+
+        Map itemData =
+                (Map) object.get("item_data");
+
+        product.put("id", object.get("id"));
+
+        product.put("name",
+                itemData.get("name"));
+
+        // SAFE TEMP PRICE
+        product.put("price", 2500);
+
+        // SAFE TEMP IMAGE
+        product.put("image",
+                "https://via.placeholder.com/150");
+
+    } catch (Exception e) {
+
+        product.put("error", e.getMessage());
     }
+
+    return product;
+}
 
     // -----------------------
     // CREATE CHECKOUT (SQUARE PAYMENT LINKS)
