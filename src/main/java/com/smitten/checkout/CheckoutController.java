@@ -30,5 +30,16 @@ public class CheckoutController {
     @GetMapping("/api/catalog")
         public Map<String, Object> getCatalog() {
         return squareService.getCatalog();
-}
+    }
+    @GetMapping("/api/sync-catalog")
+        public Map<String, Object> syncCatalog(SquareCheckoutService service,
+        SquareCatalogCache cache) {
+
+            service.syncCatalog(cache);
+
+            return Map.of(
+                "success", true,
+                "count", cache.all().size()
+            );
+        }
 }
