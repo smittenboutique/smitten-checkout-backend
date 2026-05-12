@@ -18,8 +18,8 @@ public class CheckoutController {
     }
 
     @GetMapping("/fbcheckout")
-    public String fbcheckout() {
-        return "fbcheckout";
+        public String fbcheckout() {
+        return "redirect:/fbcheckout.html";
     }
 
     @PostMapping("/api/create-checkout")
