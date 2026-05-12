@@ -13,8 +13,11 @@ public class CheckoutController {
     }
 
     @GetMapping("/api/health")
-        public Map<String, Object> health() {
-        return Map.of("status", "ok");
+        public Map<String, Object> health(SquareCatalogCache cache) {
+        return Map.of(
+            "status", "ok",
+            "catalog_loaded", cache.all().size()
+        );
     }
 
     @GetMapping("/fbcheckout")
