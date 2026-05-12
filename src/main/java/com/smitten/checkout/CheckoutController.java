@@ -90,7 +90,7 @@ public class CheckoutController {
             }
 
             Map<String, Object> order = new HashMap<>();
-            order.put("location_id", locationId);
+            order.put("location_id", 8678GDF01W6SW);
             order.put("line_items", lineItems);
 
             Map<String, Object> request = new HashMap<>();
