@@ -14,41 +14,63 @@
 
 <h2>Your Cart</h2>
 <div id="status">Loading...</div>
+    
 <div id="items"></div>
+    <button onclick="addToCart({id:'ring', name:'Gold Ring', qty:1, price:2500})">
+        Add Ring
+    </button>
 
+    <button onclick="addToCart({id:'necklace', name:'Necklace', qty:1, price:5000})">
+        Add Necklace
+    </button>
+    
 <button id="continue">Continue to Checkout</button>
 
 <script>
-document.getElementById("continue").onclick = async () => {
+    let cart = [];
+    function addToCart(item) {
+        cart.push(item);
+        renderCart();
+    }
+    function renderCart() {
+    const container = document.getElementById("items");
+    container.innerHTML = "";
 
-    console.log("BUTTON CLICKED");
+    cart.forEach((i, index) => {
+        const div = document.createElement("div");
+        div.className = "item";
 
-    try {
-console.log("Sending items:", [
-    { id: "ring-001", name: "Gold Ring", qty: 2, price: 2500 },
-    { id: "necklace-002", name: "Necklace", qty: 1, price: 5000 }
-]);
-        const res = await fetch("/api/create-checkout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-    items: [
-        {
-            id: "ring-001",
-            name: "Gold Ring",
-            qty: 2,
-            price: 2500
-        },
-        {
-            id: "necklace-002",
-            name: "Necklace",
-            qty: 1,
-            price: 5000
-        }
-    ]
-})
+        div.innerHTML = `
+            <div>
+                <b>${i.name}</b><br/>
+                Qty: ${i.qty} • $${(i.price / 100).toFixed(2)}
+            </div>
+            <button onclick="removeItem(${index})">Remove</button>
+        `;
+
+        container.appendChild(div);
+    });
+
+    document.getElementById("status").innerText =
+        cart.length ? "Ready to checkout" : "Cart empty";
+}
+    function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+    renderCart();
+    
+    document.getElementById("continue").onclick = async () => {
+        console.log("BUTTON CLICKED");
+            try {
+                const res = await fetch("/api/create-checkout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                body: JSON.stringify({
+                    items: cart
+                })
         });
 
         console.log("STATUS:", res.status);
