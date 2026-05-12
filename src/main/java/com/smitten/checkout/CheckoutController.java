@@ -63,9 +63,15 @@ public class CheckoutController {
         Map object =
                 (Map) response.getBody().get("object");
 
-        Map itemData =
-                (Map) object.get("item_data");
+        Map itemData = (Map) object.get("item_data");
 
+        List variations =
+            (List) itemData.get("variations");
+
+        Map variation = (Map) variations.get(0);
+
+        String variationId = (String) variation.get("id");
+        
         product.put("id", object.get("id"));
 
         product.put("name",
@@ -144,7 +150,7 @@ if (items == null || items.isEmpty()) {
 
         Map<String, Object> lineItem = new HashMap<>();
 
-        lineItem.put("name", item.get("name"));
+        lineItem.put("catalog_object_id", variationId);
 
         lineItem.put("quantity",
                 String.valueOf(item.get("qty")));
