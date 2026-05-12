@@ -90,7 +90,7 @@ public class CheckoutController {
                     Map<String, Object> lineItem = new HashMap<>();
                     lineItem.put("name", "Smitten Item " + item.get("id"));
                     lineItem.put("quantity", String.valueOf(item.get("qty")));
-
+                    Integer price = (Integer) item.get("price");
                     lineItem.put("base_price_money", Map.of(
                             "amount", price,
                             "currency", "USD"
