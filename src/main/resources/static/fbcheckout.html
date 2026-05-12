@@ -23,7 +23,7 @@
 <script>
 async function loadCatalog() {
 
-    const res = await fetch("/api/catalog");
+    const res = await fetch("/api/synced-catalog");
     const data = await res.json();
 
     if (!data.success) {
