@@ -16,19 +16,11 @@
 <div id="status">Loading...</div>
     
 <div id="items"></div>
-    <button onclick="addToCart({
-    id:'ring',
-    name:'Gold Ring',
-    price:2500
-})">
+<button onclick="addToCart({catalog_object_id:'SQUARE_ID_RING'})">
     Add Ring
 </button>
 
-<button onclick="addToCart({
-    id:'necklace',
-    name:'Necklace',
-    price:5000
-})">
+<button onclick="addToCart({catalog_object_id:'SQUARE_ID_NECKLACE'})">
     Add Necklace
 </button>
     
@@ -40,14 +32,15 @@ let cart = [];
 
 function addToCart(item) {
 
-    const existing = cart.find(i => i.id === item.id);
+    const existing = cart.find(i =>
+        i.catalog_object_id === item.catalog_object_id
+    );
 
     if (existing) {
         existing.qty += 1;
     } else {
-
         cart.push({
-            ...item,
+            catalog_object_id: item.catalog_object_id,
             qty: 1
         });
     }
@@ -69,8 +62,8 @@ function renderCart() {
 
         div.innerHTML = `
             <div>
-                <b>${i.name}</b><br/>
-                $${(i.price / 100).toFixed(2)}
+                <b>${i.catalog_object_id}</b><br/>
+                Qty: ${i.qty}
             </div>
 
             <div>
@@ -88,9 +81,7 @@ function renderCart() {
     });
 
     document.getElementById("status").innerText =
-        cart.length
-            ? "Ready to checkout"
-            : "Cart empty";
+        cart.length ? "Ready to checkout" : "Cart empty";
 }
 
 function increaseQty(index) {
@@ -126,7 +117,10 @@ document.getElementById("continue").onclick = async () => {
             },
 
             body: JSON.stringify({
-                items: cart
+                items: cart.map(i => ({
+                    catalog_object_id: i.catalog_object_id,
+                    quantity: i.qty
+                }))
             })
         });
 
