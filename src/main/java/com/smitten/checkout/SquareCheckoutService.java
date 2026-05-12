@@ -34,18 +34,39 @@ public class SquareCheckoutService {
 
             List<Map<String, Object>> lineItems = new ArrayList<>();
 
-            for (Map<String, Object> item : items) {
+for (Map<String, Object> item : items) {
 
-                Map<String, Object> lineItem = new HashMap<>();
+    Map<String, Object> lineItem = new HashMap<>();
 
-                lineItem.put("catalog_object_id",
-                        item.get("catalog_object_id"));
+    // OPTION A: catalog mode (recommended if using Square inventory)
+    if (item.get("catalog_object_id") != null) {
 
-                lineItem.put("quantity",
-                        String.valueOf(item.get("quantity")));
+        lineItem.put("catalog_object_id",
+                item.get("catalog_object_id"));
 
-                lineItems.add(lineItem);
-            }
+        lineItem.put("quantity",
+                String.valueOf(item.get("quantity")));
+
+    } 
+    // OPTION B: manual pricing fallback
+    else {
+
+        lineItem.put("name",
+                item.getOrDefault("name", "Smitten Item"));
+
+        lineItem.put("quantity",
+                String.valueOf(item.getOrDefault("quantity", "1")));
+
+        lineItem.put("base_price_money", Map.of(
+                "amount",
+                ((Number) item.getOrDefault("price", 1000)).intValue(),
+                "currency",
+                "USD"
+        ));
+    }
+
+    lineItems.add(lineItem);
+}
 
             Map<String, Object> order = new HashMap<>();
             order.put("location_id", locationId);
