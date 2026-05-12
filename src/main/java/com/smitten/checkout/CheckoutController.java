@@ -8,6 +8,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+System.out.println("TOKEN: " + token);
+System.out.println("LOCATION: " + locationId);
+
 @Controller
 public class CheckoutController {
 
@@ -32,8 +35,8 @@ public class CheckoutController {
     // PRODUCT Square Catalog API
     // -----------------------
     @GetMapping("/api/product")
-@ResponseBody
-public Map<String, Object> getProduct(@RequestParam String id) {
+    @ResponseBody
+    public Map<String, Object> getProduct(@RequestParam String id) {
 
     Map<String, Object> product = new HashMap<>();
 
