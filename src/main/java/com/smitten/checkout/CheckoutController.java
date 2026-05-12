@@ -54,8 +54,14 @@ public class CheckoutController {
         Map<String, Object> result = new HashMap<>();
 
         try {
+            System.out.println("STEP 1: method entered");
+            
             String token = System.getenv("SQUARE_ACCESS_TOKEN");
             String locationId = System.getenv("SQUARE_LOCATION_ID");
+            
+            System.out.println("STEP 2: env vars loaded");
+            System.out.println("TOKEN EXISTS: " + (token != null));
+            System.out.println("LOCATION EXISTS: " + (locationId != null));
 
             if (token == null || locationId == null) {
                 throw new RuntimeException("Missing Square environment variables");
@@ -103,10 +109,15 @@ public class CheckoutController {
             String url =
                     "https://connect.squareupsandbox.com/v2/online-checkout/payment-links";
 
+            System.out.println("STEP 3: sending Square request");
+            
             ResponseEntity<Map> response =
                     restTemplate.postForEntity(url, entity, Map.class);
 
             Map responseBody = response.getBody();
+
+            System.out.println("STEP 4: Square responded");
+            System.out.println(responseBody);
 
             if (responseBody == null || responseBody.get("payment_link") == null) {
                 throw new RuntimeException("Invalid Square response: " + responseBody);
@@ -119,6 +130,7 @@ public class CheckoutController {
 
         } catch (Exception e) {
             result.put("success", false);
+            e.printStackTrace();
             result.put("error", e.getMessage());
         }
 
