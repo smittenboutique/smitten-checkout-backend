@@ -24,15 +24,31 @@ document.getElementById("continue").onclick = async () => {
     console.log("BUTTON CLICKED");
 
     try {
-
+console.log("Sending items:", [
+    { id: "ring-001", name: "Gold Ring", qty: 2, price: 2500 },
+    { id: "necklace-002", name: "Necklace", qty: 1, price: 5000 }
+]);
         const res = await fetch("/api/create-checkout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                items: []
-            })
+    items: [
+        {
+            id: "ring-001",
+            name: "Gold Ring",
+            qty: 2,
+            price: 2500
+        },
+        {
+            id: "necklace-002",
+            name: "Necklace",
+            qty: 1,
+            price: 5000
+        }
+    ]
+})
         });
 
         console.log("STATUS:", res.status);
