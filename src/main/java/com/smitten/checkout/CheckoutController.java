@@ -8,9 +8,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-System.out.println("TOKEN: " + token);
-System.out.println("LOCATION: " + locationId);
-
 @Controller
 public class CheckoutController {
 
@@ -103,10 +100,20 @@ public class CheckoutController {
             
             String token = System.getenv("SQUARE_ACCESS_TOKEN");
             String locationId = System.getenv("SQUARE_LOCATION_ID");
+            System.out.println("TOKEN: " + token);
+            System.out.println("LOCATION: " + locationId);
             
             System.out.println("STEP 2: env vars loaded");
             System.out.println("TOKEN EXISTS: " + (token != null));
             System.out.println("LOCATION EXISTS: " + (locationId != null));
+
+            if (token == null || token.isBlank()) {
+                throw new RuntimeException("Missing Square Access Token");
+            }
+
+            if (locationId == null || locationId.isBlank()) {
+                throw new RuntimeException("Missing Square Location ID");
+            }
 
             if (token == null || locationId == null) {
                 throw new RuntimeException("Missing Square environment variables");
@@ -114,36 +121,48 @@ public class CheckoutController {
 
             // Build simple line item (safe baseline)
             List<Map<String, Object>> items =
-                    (List<Map<String, Object>>) body.get("items");
+        (List<Map<String, Object>>) body.get("items");
 
-            List<Map<String, Object>> lineItems = new ArrayList<>();
+List<Map<String, Object>> lineItems = new ArrayList<>();
 
-            if (items == null || items.isEmpty()) {
-                Map<String, Object> fallback = new HashMap<>();
-                fallback.put("name", "Smitten Test Item");
-                fallback.put("quantity", "1");
-                fallback.put("base_price_money", Map.of(
-                    "amount", 1000,
-                    "currency", "USD"
-            ));
-            lineItems.add(fallback);
+if (items == null || items.isEmpty()) {
+
+    Map<String, Object> fallback = new HashMap<>();
+    fallback.put("name", "Smitten Test Item");
+    fallback.put("quantity", "1");
+
+    fallback.put("base_price_money", Map.of(
+            "amount", 1000,
+            "currency", "USD"
+    ));
+
+    lineItems.add(fallback);
+
+} else {
+
+    for (Map<String, Object> item : items) {
+
+        Map<String, Object> lineItem = new HashMap<>();
+
+        lineItem.put("name", item.get("name"));
+
+        lineItem.put("quantity",
+                String.valueOf(item.get("qty")));
+
+        Number priceNum = (Number) item.get("price");
+
+        int price = priceNum != null
+                ? priceNum.intValue()
+                : 1000;
+
+        lineItem.put("base_price_money", Map.of(
+                "amount", price,
+                "currency", "USD"
+        ));
+
+        lineItems.add(lineItem);
+    }
 }
-
-            if (items != null) {
-                for (Map<String, Object> item : items) {
-
-                    Map<String, Object> lineItem = new HashMap<>();
-                    lineItem.put("name", "Smitten Item " + item.get("id"));
-                    lineItem.put("quantity", String.valueOf(item.get("qty")));
-                    Integer price = (Integer) item.get("price");
-                    lineItem.put("base_price_money", Map.of(
-                            "amount", price,
-                            "currency", "USD"
-                    ));
-
-                    lineItems.add(lineItem);
-                }
-            }
 
             Map<String, Object> order = new HashMap<>();
             order.put("location_id", locationId);
