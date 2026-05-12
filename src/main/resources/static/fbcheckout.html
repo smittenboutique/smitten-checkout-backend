@@ -17,18 +17,57 @@
     
 <div id="items"></div>
 
-    <button onclick="addToCart({catalog_object_id:'REAL_VARIATION_ID_1'})">
-    Add Ring
-    </button>
-
-    <button onclick="addToCart({catalog_object_id:'REAL_VARIATION_ID_2'})">
-    Add Necklace
-    </button>
     
 <button id="continue">Continue to Checkout</button>
 
 <script>
+async function loadCatalog() {
 
+    const res = await fetch("/api/catalog");
+    const data = await res.json();
+
+    if (!data.success) {
+        document.getElementById("status").innerText = "Catalog failed to load";
+        return;
+    }
+
+    const container = document.getElementById("items");
+    container.innerHTML = "";
+
+    const items = data.objects || [];
+
+    items.forEach(obj => {
+
+        if (obj.type !== "ITEM") return;
+
+        const itemData = obj.item_data;
+        const variation = itemData.variations?.[0];
+
+        if (!variation) return;
+
+        const card = document.createElement("div");
+
+        card.className = "item";
+
+        card.innerHTML = `
+            <div>
+                <b>${itemData.name}</b><br/>
+                ${variation.id}
+            </div>
+
+            <button onclick="addToCart({
+                catalog_object_id: '${variation.id}'
+            })">
+                Add
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+
+    document.getElementById("status").innerText =
+        "Catalog loaded";
+}
 let cart = [];
 
 function addToCart(item) {
@@ -150,7 +189,7 @@ if (cart.length === 0) {
 };
 
 renderCart();
-
+loadCatalog();
 </script>
 
 </body>
