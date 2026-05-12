@@ -19,78 +19,39 @@
 <button id="continue">Continue to Checkout</button>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const rawProducts = params.get("products");
-
-let items = [];
-
-async function load() {
-    if (!rawProducts) {
-        document.getElementById("status").innerText = "No items found.";
-        return;
-    }
-
-    const entries = rawProducts.split(",");
-
-    for (const entry of entries) {
-        const [id, qty] = entry.split(":");
-
-        const res = await fetch('/api/product?id=${id}');
-        const data = await res.json();
-
-        items.push({ id, qty, name: data.name, image: data.image });
-    }
-
-    render();
-}
-
-function render() {
-    const container = document.getElementById("items");
-    container.innerHTML = "";
-
-    items.forEach(i => {
-        const div = document.createElement("div");
-        div.className = "item";
-
-        div.innerHTML = '
-            <img src="${i.image}" />
-            <div>
-                <div><b>${i.name}</b></div>
-                <div>Qty: ${i.qty}</div>
-            </div>
-        ';
-
-        container.appendChild(div);
-    });
-
-    document.getElementById("status").innerText = "Ready to checkout";
-    document.getElementById("continue").disabled = false;
-}
-
 document.getElementById("continue").onclick = async () => {
 
     console.log("BUTTON CLICKED");
 
     try {
+
         const res = await fetch("/api/create-checkout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ items: [] }) // safe test payload
+            body: JSON.stringify({
+                items: []
+            })
         });
 
-        console.log("Status:", res.status);
+        console.log("STATUS:", res.status);
 
         const data = await res.json();
-        console.log("Response:", data);
+
+        console.log(data);
+
+        if (data.success) {
+            window.location.href = data.checkout_url;
+        } else {
+            alert("Checkout failed");
+        }
 
     } catch (err) {
-        console.error("Checkout failed:", err);
+
+        console.error("FETCH ERROR:", err);
     }
 };
-
-load();
 </script>
 
 </body>
