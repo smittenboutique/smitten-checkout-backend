@@ -92,7 +92,7 @@ public class CheckoutController {
                     lineItem.put("quantity", String.valueOf(item.get("qty")));
 
                     lineItem.put("base_price_money", Map.of(
-                            "amount", 1000,
+                            "amount", price,
                             "currency", "USD"
                     ));
 
