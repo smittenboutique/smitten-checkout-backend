@@ -73,6 +73,17 @@ public class CheckoutController {
 
             List<Map<String, Object>> lineItems = new ArrayList<>();
 
+            if (items == null || items.isEmpty()) {
+                Map<String, Object> fallback = new HashMap<>();
+                fallback.put("name", "Smitten Test Item");
+                fallback.put("quantity", "1");
+                fallback.put("base_price_money", Map.of(
+                    "amount", 1000,
+                    "currency", "USD"
+            ));
+            lineItems.add(fallback);
+}
+
             if (items != null) {
                 for (Map<String, Object> item : items) {
 
