@@ -13,7 +13,7 @@ public class CheckoutController {
     }
 
     @GetMapping("/api/health")
-    public Map<String, Object> health() {
+        public Map<String, Object> health() {
         return Map.of("status", "ok");
     }
 
@@ -23,7 +23,12 @@ public class CheckoutController {
     }
 
     @PostMapping("/api/create-checkout")
-    public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
+        public Map<String, Object> createCheckout(@RequestBody Map<String, Object> body) {
         return squareService.createCheckout(body);
     }
+
+    @GetMapping("/api/catalog")
+        public Map<String, Object> getCatalog() {
+        return squareService.getCatalog();
+}
 }
