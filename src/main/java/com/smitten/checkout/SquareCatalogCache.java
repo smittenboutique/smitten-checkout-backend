@@ -10,8 +10,13 @@ public class SquareCatalogCache {
 
     private final Map<String, Object> cache = new ConcurrentHashMap<>();
 
-    public void put(String id, Object product)
-    public Map<String, Object> getAll()
+    public void put(String id, Object product) {
+        cache.put(id, product);
+    }
+
+    public Map<String, Object> getAll() {
+        return cache;
+    }
 
     public void clear() {
         cache.clear();
