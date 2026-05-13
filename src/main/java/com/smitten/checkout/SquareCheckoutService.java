@@ -9,52 +9,147 @@ import java.util.*;
 @Service
 public class SquareCheckoutService {
 
-    public void syncCatalog(SquareCatalogCache cache) {
+public Map<String, Object> getCatalog() {
 
-        try {
-            String token = System.getenv("SQUARE_ACCESS_TOKEN");
+    Map<String, Object> result = new HashMap<>();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token);
+    try {
 
-            HttpEntity<String> entity = new HttpEntity<>(headers);
+        String token = System.getenv("SQUARE_ACCESS_TOKEN");
 
-            RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
 
-            String url = "https://connect.squareupsandbox.com/v2/catalog/list";
+        HttpEntity<String> entity =
+                new HttpEntity<>(headers);
 
-            ResponseEntity<Map> response =
-                    restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+        RestTemplate restTemplate =
+                new RestTemplate();
 
-            List<Map<String, Object>> objects =
-                    (List<Map<String, Object>>) response.getBody().get("objects");
+        String url =
+                "https://connect.squareupsandbox.com/v2/catalog/list";
 
-            cache.clear();
+        ResponseEntity<Map> response =
+                restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        entity,
+                        Map.class
+                );
 
-            for (Map<String, Object> obj : objects) {
+        result.put("success", true);
+        result.put(
+                "objects",
+                response.getBody().get("objects")
+        );
 
-                String type = (String) obj.get("type");
+    } catch (Exception e) {
 
-                if (!"ITEM_VARIATION".equals(type)) continue;
-
-                Map varData = (Map) obj.get("item_variation_data");
-                if (varData == null) continue;
-
-                Map<String, Object> product = new HashMap<>();
-
-                product.put("id", obj.get("id"));
-                product.put("name", varData.get("name"));
-
-                Map priceMoney = (Map) varData.get("price_money");
-                if (priceMoney != null) {
-                    product.put("price", priceMoney.get("amount"));
-                }
-
-                cache.put((String) obj.get("id"), product);
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Catalog sync failed: " + e.getMessage());
-        }
+        result.put("success", false);
+        result.put("error", e.getMessage());
     }
+
+    return result;
+}
+
+public Map<String, Object> createCheckout(
+        Map<String, Object> body
+) {
+
+    Map<String, Object> result =
+            new HashMap<>();
+
+    try {
+
+        String token =
+                System.getenv("SQUARE_ACCESS_TOKEN");
+
+        String locationId =
+                System.getenv("SQUARE_LOCATION_ID");
+
+        List<Map<String, Object>> items =
+                (List<Map<String, Object>>) body.get("items");
+
+        List<Map<String, Object>> lineItems =
+                new ArrayList<>();
+
+        for (Map<String, Object> item : items) {
+
+            Map<String, Object> lineItem =
+                    new HashMap<>();
+
+            lineItem.put(
+                    "catalog_object_id",
+                    item.get("catalog_object_id")
+            );
+
+            lineItem.put(
+                    "quantity",
+                    String.valueOf(item.get("quantity"))
+            );
+
+            lineItems.add(lineItem);
+        }
+
+        Map<String, Object> order =
+                new HashMap<>();
+
+        order.put("location_id", locationId);
+        order.put("line_items", lineItems);
+
+        Map<String, Object> request =
+                new HashMap<>();
+
+        request.put("order", order);
+
+        request.put(
+                "idempotency_key",
+                UUID.randomUUID().toString()
+        );
+
+        HttpHeaders headers =
+                new HttpHeaders();
+
+        headers.setContentType(
+                MediaType.APPLICATION_JSON
+        );
+
+        headers.setBearerAuth(token);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(request, headers);
+
+        RestTemplate restTemplate =
+                new RestTemplate();
+
+        String url =
+                "https://connect.squareupsandbox.com/v2/online-checkout/payment-links";
+
+        ResponseEntity<Map> response =
+                restTemplate.postForEntity(
+                        url,
+                        entity,
+                        Map.class
+                );
+
+        Map paymentLink =
+                (Map) response.getBody()
+                        .get("payment_link");
+
+        result.put("success", true);
+
+        result.put(
+                "checkout_url",
+                paymentLink.get("url")
+        );
+
+    } catch (Exception e) {
+
+        result.put("success", false);
+        result.put("error", e.getMessage());
+    }
+
+    return result;
+}
+
 }
