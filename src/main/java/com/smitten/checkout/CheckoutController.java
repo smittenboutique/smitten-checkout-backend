@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class CheckoutController {
 
-```
+
 private final SquareCheckoutService squareService;
 
 public CheckoutController(SquareCheckoutService squareService) {
@@ -41,6 +41,5 @@ public Map<String, Object> createCheckout(
 ) {
     return squareService.createCheckout(body);
 }
-```
 
 }
