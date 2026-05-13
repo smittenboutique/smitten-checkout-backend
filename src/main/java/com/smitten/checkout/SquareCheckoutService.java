@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Service
+    public void syncCatalog(SquareCatalogCache cache)
 public class SquareCheckoutService {
 
 public Map<String, Object> getCatalog() {
