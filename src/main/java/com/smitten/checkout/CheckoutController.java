@@ -1,4 +1,4 @@
-```java
+
 package com.smitten.checkout;
 
 import org.springframework.http.*;
@@ -183,4 +183,4 @@ public class SquareCheckoutService {
         return result;
     }
 }
-```
+
