@@ -8,16 +8,10 @@ import java.util.Map;
 @Component
 public class SquareCatalogCache {
 
-    private final Map<String, Map<String, Object>> cache =
-            new ConcurrentHashMap<>();
+    private final Map<String, Object> cache = new ConcurrentHashMap<>();
 
-    public void put(String id, Map<String, Object> product) {
-        cache.put(id, product);
-    }
-
-    public Map<String, Object> getAll() {
-        return cache;
-    }
+    public void put(String id, Object product)
+    public Map<String, Object> getAll()
 
     public void clear() {
         cache.clear();
