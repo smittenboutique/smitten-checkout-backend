@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -13,7 +13,15 @@ import java.util.Map;
 public class CheckoutController {
 
 private final SquareCheckoutService squareService;
+private final SquareCatalogCache cache;
 
+public CheckoutController(
+    SquareCheckoutService squareService,
+    SquareCatalogCache cache
+) {
+    this.squareService = squareService;
+    this.cache = cache;
+}
 public CheckoutController(SquareCheckoutService squareService) {
     this.squareService = squareService;
 }
