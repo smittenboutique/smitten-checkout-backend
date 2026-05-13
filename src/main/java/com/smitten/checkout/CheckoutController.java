@@ -1,23 +1,16 @@
-
 package com.smitten.checkout;
 
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-
-@Service
-public class SquareCheckoutService {
-package com.smitten.checkout;
-
-import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class CheckoutController {
-
 
 private final SquareCheckoutService squareService;
 
@@ -37,8 +30,8 @@ public Map<String, Object> getCatalog() {
 
 @PostMapping("/create-checkout")
 public Map<String, Object> createCheckout(
-    @RequestBody Map<String, Object> body
-) {
+        @RequestBody Map<String, Object> body) {
+
     return squareService.createCheckout(body);
 }
 
