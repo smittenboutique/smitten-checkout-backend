@@ -37,24 +37,42 @@ public class SquareCheckoutService {
 
             for (Map<String, Object> obj : objects) {
 
-                if (!"ITEM".equals(obj.get("type"))) continue;
+    String type = (String) obj.get("type");
 
-                Map itemData = (Map) obj.get("item_data");
+    if (!"ITEM_VARIATION".equals(type)) continue;
 
-                List<Map<String, Object>> variations =
-                    (List<Map<String, Object>>) itemData.get("variations");
+    Map varData = (Map) obj.get("item_variation_data");
+    if (varData == null) continue;
 
-                if (variations == null || variations.isEmpty()) continue;
+    // parent ITEM reference (this is key fix)
+    List<String> itemIds = (List<String>) varData.get("item_id");
+    String itemId = itemIds != null && !itemIds.isEmpty()
+            ? itemIds.get(0)
+            : null;
 
-                Map firstVar = variations.get(0);
+    Map<String, Object> product = new HashMap<>();
 
-                Map<String, Object> product = new HashMap<>();
+    // variation ID = checkout ID (critical)
+    product.put("variation_id", obj.get("id"));
 
-                product.put("id", obj.get("id"));
-                product.put("name", itemData.get("name"));
-                product.put("variation_id", firstVar.get("id"));
+    // fallback name safety
+    product.put("name",
+        varData.getOrDefault("name", "Smitten Item")
+    );
 
-                cache.put((String) obj.get("id"), product);
+    // price safety
+    Map priceMoney = (Map) varData.get("price_money");
+    if (priceMoney != null) {
+        product.put("price", priceMoney.get("amount"));
+    } else {
+        product.put("price", 1000);
+    }
+
+    product.put("item_id", itemId);
+
+    cache.put((String) obj.get("id"), product);
+}
+                
             }
 
         } catch (Exception e) {
