@@ -22,7 +22,7 @@ public class CatalogStartupSync implements ApplicationRunner {
         System.out.println("🔄 Syncing Square catalog on startup...");
 
         try {
-            squareService.syncCatalog(cache);
+            // squareService.syncCatalog(cache);
 
             System.out.println("✅ Catalog sync complete. Items cached: "
                 + cache.all().size());
