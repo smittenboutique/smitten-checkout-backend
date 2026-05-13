@@ -28,6 +28,17 @@ public Map<String, Object> getCatalog() {
     return squareService.getCatalog();
 }
 
+@GetMapping("/api/synced-catalog")
+public Map<String, Object> getSyncedCatalog() {
+
+    Map<String, Object> res = new HashMap<>();
+
+    res.put("success", true);
+    res.put("products", cache.getAll().values());
+
+    return res;
+}
+    
 @PostMapping("/create-checkout")
 public Map<String, Object> createCheckout(
         @RequestBody Map<String, Object> body) {
