@@ -151,6 +151,9 @@ public Map<String, Object> createCheckout(Map<String, Object> body) {
         Map<String, Object> request = new HashMap<>();
         request.put("order", order);
         request.put("idempotency_key", UUID.randomUUID().toString());
+        request.put("checkout_options", Map.of(
+            "redirect_url", "https://smitten-checkout-backend.onrender.com/success.html"
+        ));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
