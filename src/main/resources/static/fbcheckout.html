@@ -138,7 +138,8 @@ async function loadCatalog() {
     container.innerHTML = "";
 
     const items = data.products || [];
-
+console.log("CATALOG DATA:", data);
+console.log("ITEMS:", items);
     items.forEach(products => {
 
         if (obj.type !== "ITEM") return;
