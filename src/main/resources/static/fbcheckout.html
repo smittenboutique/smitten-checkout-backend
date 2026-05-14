@@ -2,28 +2,127 @@
 <html>
 <head>
     <title>Checkout</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        .item { display:flex; gap:12px; margin-bottom:12px; align-items:center; }
-        img { width:50px; height:50px; }
-        button { margin-top:20px; padding:10px 16px; }
-    </style>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/brandon-grotesque');
+    body {
+        font-family: 'Brandon Grotesque', sans-serif;
+        margin: 0;
+        background: #faf7f2;
+        color: #2f2a25;
+    }
+
+    .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 36px 20px 60px;
+    }
+
+    h2 {
+        font-size: 34px;
+        font-weight: 500;
+        letter-spacing: .04em;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+
+    h3 {
+        font-size: 18px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    #products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+    }
+
+    .product-card b,
+    .cart-row b {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: .02em;
+    }
+
+    .product-card b,
+    .cart-row b {
+        font-size: 17px;
+        font-weight: 400;
+    }
+
+    .price {
+        margin: 8px 0 14px;
+        font-family: Arial, sans-serif;
+        color: #7d6658;
+    }
+
+    button {
+        border: 1px solid #2f2a25;
+        background: #2f2a25;
+        color: white;
+        padding: 12px 18px;
+        font-family: 'Brandon Grotesque', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    button:hover {
+        background: white;
+        color: #2f2a25;
+    }
+
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .qty-controls button {
+        padding: 5px 10px;
+    }
+
+    #continue {
+        width: 100%;
+        margin-top: 28px;
+        padding: 14px;
+    }
+
+    #status {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        color: #8a7466;
+        margin-bottom: 20px;
+    }
+</style>
 </head>
 
 <body>
+<div class="page">
 
 <h2>Your Cart</h2>
+<div class="subtitle">Smitten checkout</div>
+
 <div id="status">Loading...</div>
-    
+
 <h3>Products</h3>
 <div id="products"></div>
 
 <h3>Cart</h3>
 <div id="cart"></div>
 
-    
 <button id="continue">Continue to Checkout</button>
 
+<!-- your script stays here -->
+
+</div>
 <script>
 async function loadCatalog() {
 
