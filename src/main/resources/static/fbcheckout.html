@@ -310,6 +310,9 @@ function updateSubtotal() {
 }
     
 document.getElementById("continue").onclick = async () => {
+    const checkoutButton = document.getElementById("continue");
+checkoutButton.disabled = true;
+checkoutButton.innerText = "Preparing checkout...";
 if (cart.length === 0) {
     alert("Your cart is empty");
     return;
@@ -346,11 +349,14 @@ if (cart.length === 0) {
 
         } else {
 
-            alert("Checkout failed");
+            alert("Checkout failed: " + (data.error || "Please try again."));
+            checkoutButton.disabled = false;
+            checkoutButton.innerText = "Continue to Checkout";
         }
 
     } catch (err) {
-
+        checkoutButton.disabled = false;
+        checkoutButton.innerText = "Continue to Checkout";
         console.error("FETCH ERROR:", err);
     }
 };
