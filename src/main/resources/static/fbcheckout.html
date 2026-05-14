@@ -91,8 +91,9 @@
 
     .product-image {
     width: 100%;
-    aspect-ratio: 1 / 1;
-    background: #f1ebe5;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: #f4efe8;
     border: 1px solid #eadfd5;
     margin-bottom: 14px;
     display: flex;
@@ -183,8 +184,12 @@ console.log("ITEMS:", items);
     card.className = "product-card";
 
     card.innerHTML = `
-    <div class="product-image">
-    <img src="REAL_SQUARE_IMAGE_URL">
+    ${item.image_url ? `
+        <img src="${item.image_url}" class="product-image" />
+    ` : ""}
+
+        <div class="product-name">${item.name}</div>
+    `;
 </div>
 
     <div class="product-info">
