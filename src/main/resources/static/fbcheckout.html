@@ -35,7 +35,7 @@ async function loadCatalog() {
         return;
     }
 
-    const container = document.getElementById("items");
+    const container = document.getElementById("products");
     container.innerHTML = "";
 
     const items = data.objects || [];
@@ -94,7 +94,7 @@ function addToCart(item) {
 
 function renderCart() {
 
-    const container = document.getElementById("items");
+    const container = document.getElementById("cart");
 
     container.innerHTML = "";
 
