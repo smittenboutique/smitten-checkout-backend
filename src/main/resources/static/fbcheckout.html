@@ -208,7 +208,15 @@ console.log("ITEMS:", items);
     document.getElementById("status").innerText =
         "Catalog loaded";
 }
-let cart = [];
+let cart = JSON.parse(
+    localStorage.getItem("smitten_cart") || "[]"
+);
+    function saveCart() {
+    localStorage.setItem(
+        "smitten_cart",
+        JSON.stringify(cart)
+    );
+}
     
 function addToCart(item) {
 
@@ -228,6 +236,7 @@ function addToCart(item) {
     }
 
     renderCart();
+    saveCart();
 }
 
 function renderCart() {
@@ -270,6 +279,7 @@ function increaseQty(index) {
     cart[index].qty += 1;
 
     renderCart();
+    saveCart();
 }
 
 function decreaseQty(index) {
@@ -281,6 +291,7 @@ function decreaseQty(index) {
     }
 
     renderCart();
+    saveCart();
 }
 
 document.getElementById("continue").onclick = async () => {
@@ -315,7 +326,7 @@ if (cart.length === 0) {
         console.log(data);
 
         if (data.success) {
-
+            localStorage.removeItem("smitten_cart");
             window.location.href = data.checkout_url;
 
         } else {
@@ -330,6 +341,7 @@ if (cart.length === 0) {
 };
 
 renderCart();
+    saveCart();
 loadCatalog();
 </script>
 
