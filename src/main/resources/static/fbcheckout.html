@@ -209,7 +209,10 @@
 async function loadCatalog() {
 
     const params = new URLSearchParams(window.location.search);
-    const rawItems = params.get("items");
+    const rawItems =
+    params.get("items") ||
+    params.get("product") ||
+    params.get("products");
 
     if (!rawItems) {
 
@@ -328,7 +331,10 @@ return;
     function preloadCartFromUrl() {
 
     const params = new URLSearchParams(window.location.search);
-    const rawItems = params.get("items");
+    const rawItems =
+    params.get("items") ||
+    params.get("product") ||
+    params.get("products");
 
     if (!rawItems) return;
 
