@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="icon" href="data:,">
-    <title>Checkout</title>
+    <title>Shopping Bag</title>
 <style>
     @import url('https://fonts.cdnfonts.com/css/brandon-grotesque');
     body {
@@ -12,37 +12,44 @@
         color: #2f2a25;
     }
 
-    .site-header,
-.site-footer {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 22px 20px;
+    .site-header {
+    background: black;
+    padding: 18px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Brandon Grotesque', sans-serif;
+    gap: 20px;
 }
 
-.logo {
-    color: #2f2a25;
+.logo-wrap {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: .22em;
-    font-size: 18px;
-    font-weight: 500;
+}
+
+.logo-image {
+    height: 42px;
+    width: auto;
+    display: block;
 }
 
 .site-header nav {
     display: flex;
+    align-items: center;
     gap: 22px;
 }
 
-.site-header nav a,
-.site-footer a {
-    color: #2f2a25;
+.site-header nav a {
+    color: white;
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: .12em;
+    letter-spacing: .16em;
     font-size: 11px;
+    font-weight: 500;
+}
+
+.site-header nav a:hover {
+    opacity: .75;
 }
 
 .site-footer {
@@ -54,16 +61,29 @@
 }
 
 @media (max-width: 640px) {
-    .site-header,
-    .site-footer {
-        display: block;
+
+    .site-header {
+        flex-direction: column;
+        justify-content: center;
         text-align: center;
+        padding: 22px 16px;
+    }
+    
+.site-footer {
+    background: black;
+    max-width: 1100px;
+    padding: 18px 28px;
+    margin: 0 auto;
+    padding: 22px 20px;
+    .logo-image {
+        height: 34px;
     }
 
     .site-header nav {
-        justify-content: center;
-        margin-top: 14px;
+        margin-top: 10px;
+        gap: 18px;
     }
+}
 
     .site-footer a {
         display: block;
@@ -80,7 +100,7 @@
 
     h2 {
         font-size: 34px;
-        font-weight: 300;
+        font-weight: 250;
         letter-spacing: .04em;
     }
 
@@ -147,7 +167,14 @@
     }
 
     .qty-controls button {
-        padding: 5px 10px;
+            background: #c5aa78;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
     }
 
     .product-image {
@@ -185,8 +212,14 @@
 }
     #continue {
         width: 100%;
+        font-weight: 500;  
         margin-top: 28px;
-        padding: 14px;
+        background: black;
+        color: white;
+        border: 0;
+        padding: 16px 20px;
+        font-weight: 600;
+        border-radius: 8px;
     }
 
     #status {
@@ -231,13 +264,16 @@
     }
 
     .qty-controls button {
-        min-width: 44px;
-        min-height: 44px;
+    background: #c5aa78;
+    color: white;
+    border: none;
+    border-radius: 6px;
     }
 
     button {
         width: 100%;
         min-height: 46px;
+        border-radius: 999px;
     }
 
     #continue {
@@ -259,23 +295,37 @@
 
 <body>
     <header class="site-header">
-    <a href="https://www.thesmittenboutique.com" class="logo">
-        SMITTEN
+
+    <a
+        href="https://www.thesmittenboutique.com"
+        class="logo-wrap"
+    >
+        <img
+            src="https://ef0c54a50a5a99fe62c8.cdn6.editmysite.com/uploads/b/ef0c54a50a5a99fe62c8cfe17f521cca97f804f3dd69d462788f1513b828c4e2/Logo-Gold_1766092768.png?width=2400&optimize=medium"
+            class="logo-image"
+            alt="Smitten Boutique"
+        />
     </a>
 
     <nav>
-        <a href="https://www.thesmittenboutique.com">Shop</a>
-        <a href="https://www.thesmittenboutique.com/s/contact">Contact</a>
+        <a href="https://www.thesmittenboutique.com">
+            Shop
+        </a>
+
+        <a href="https://www.thesmittenboutique.com/s/contact">
+            Contact
+        </a>
     </nav>
+
 </header>
 <div class="page">
 
 <div id="status">Loading...</div>
 
-<h2>Products</h2>
+<h3>Products</h3>
 <div id="products"></div>
 
-<h2>Cart</h2>
+<h3>Cart</h3>
 <div id="cart"></div>
 <div id="subtotal"></div>
 <button id="continue">Continue to Checkout</button>
@@ -429,7 +479,14 @@ console.log("QUERY PARAMS:", Object.fromEntries(
         itemData?.name === cartItem.catalog_object_id
     );
 });
-
+if (!product) {
+    console.log("NO MATCH FOR CART ITEM:", cartItem.catalog_object_id);
+    console.log("CATALOG IDS:", catalogItems.map(p => ({
+        itemId: p.id,
+        variationId: p.item_data?.variations?.[0]?.id,
+        name: p.item_data?.name
+    })));
+}
         if (!product) return cartItem;
 
         if (product.item_data) {
