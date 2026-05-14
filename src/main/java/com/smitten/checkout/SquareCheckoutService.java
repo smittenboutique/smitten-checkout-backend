@@ -90,7 +90,7 @@ public Map<String, Object> getCatalog() {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = "https://connect.squareupsandbox.com/v2/catalog/list?types=ITEM,ITEM_VARIATION,IMAGE";
+        String url = "squareBaseUrl() + "/v2/catalog/list?types=ITEM,ITEM_VARIATION,IMAGE";
 
         ResponseEntity<Map> response =
                 restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
@@ -162,7 +162,7 @@ public Map<String, Object> createCheckout(Map<String, Object> body) {
         RestTemplate restTemplate = new RestTemplate();
 
         String url =
-                "https://connect.squareupsandbox.com/v2/online-checkout/payment-links";
+                squareBaseUrl() + "/v2/online-checkout/payment-links";
 
         ResponseEntity<Map> response =
                 restTemplate.postForEntity(url, entity, Map.class);
