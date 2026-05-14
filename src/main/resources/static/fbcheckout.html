@@ -292,15 +292,14 @@ return;
             ${price ? `$${(price / 100).toFixed(2)}` : ""}
         </div>
     </div>
-<button onclick="copyProductLink('${catalogId}')">
-    Copy Product Link
-</button>
     <button onclick="addToCart({
         catalog_object_id: '${catalogId}',
         name: '${name}',
         price: ${price}
     })">
-        Add to Cart
+        <a class="button-link" href="${productUrlFromName(name)}">
+            View Product
+        </a>    
     </button>
 `;
     container.appendChild(card);
@@ -471,6 +470,16 @@ function updateSubtotal() {
         cart.length
             ? `Subtotal: $${(subtotal / 100).toFixed(2)}`
             : "";
+}
+
+    function productUrlFromName(name) {
+    const slug = name
+        .toLowerCase()
+        .replaceAll("&", "and")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    return `https://www.thesmittenboutique.com/product/${slug}`;
 }
     
 document.getElementById("continue").onclick = async () => {
