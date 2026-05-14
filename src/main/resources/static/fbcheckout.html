@@ -225,6 +225,30 @@ console.log("ITEMS:", items);
     saveCart();
     renderCart();
 }
+    function hydrateCart(catalogItems) {
+    cart = cart.map(cartItem => {
+        const product = catalogItems.find(p => {
+            const itemData = p.item_data;
+            const variation = itemData?.variations?.[0];
+            return variation?.id === cartItem.catalog_object_id;
+        });
+
+        if (!product) return cartItem;
+
+        const variation = product.item_data.variations[0];
+        const priceMoney = variation.item_variation_data?.price_money || {};
+
+        return {
+            ...cartItem,
+            name: product.item_data.name,
+            price: priceMoney.amount || 0
+        };
+    });
+
+    saveCart();
+    renderCart();
+        hydrateCart(items);
+}
 }
 
     let cart = JSON.parse(
