@@ -166,10 +166,16 @@ if (imageId != null) {
             Map<String, Object> request = new HashMap<>();
             request.put("order", order);
             request.put("idempotency_key", UUID.randomUUID().toString());
-            request.put("checkout_options", Map.of(
-                    "redirect_url",
-                    "https://smitten-checkout-backend.onrender.com/success.html"
-            ));
+            String appBaseUrl = System.getenv("APP_BASE_URL");
+
+if (appBaseUrl == null || appBaseUrl.isBlank()) {
+    appBaseUrl = "https://smitten-checkout-backend.onrender.com";
+}
+
+request.put("checkout_options", Map.of(
+        "redirect_url",
+        appBaseUrl + "/success.html"
+));
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
