@@ -138,7 +138,7 @@
 
 <h3>Cart</h3>
 <div id="cart"></div>
-
+<div id="subtotal"></div>
 <button id="continue">Continue to Checkout</button>
 
 <!-- your script stays here -->
@@ -272,6 +272,10 @@ div.innerHTML = `
 
     document.getElementById("status").innerText =
         cart.length ? "Ready to checkout" : "Cart empty";
+updateSubtotal();
+
+document.getElementById("continue").disabled = cart.length === 0;
+    
 }
 
 function increaseQty(index) {
@@ -293,10 +297,21 @@ function decreaseQty(index) {
     renderCart();
     saveCart();
 }
+    
+function updateSubtotal() {
+    const subtotal = cart.reduce((sum, item) => {
+        return sum + ((item.price || 0) * item.qty);
+    }, 0);
 
+    document.getElementById("subtotal").innerText =
+        cart.length
+            ? `Subtotal: $${(subtotal / 100).toFixed(2)}`
+            : "";
+}
+    
 document.getElementById("continue").onclick = async () => {
 if (cart.length === 0) {
-    alert("Cart is empty");
+    alert("Your cart is empty");
     return;
 }
     console.log("BUTTON CLICKED");
