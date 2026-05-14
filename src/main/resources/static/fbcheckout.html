@@ -137,7 +137,7 @@ async function loadCatalog() {
     const container = document.getElementById("products");
     container.innerHTML = "";
 
-    const items = data.objects || [];
+    const items = data.products || [];
 
     items.forEach(obj => {
 
@@ -156,15 +156,23 @@ const price = product.price
     ? `$${(product.price / 100).toFixed(2)}`
     : "";
 
+card.className = "product-card";
+
+const catalogId = product.catalog_object_id || product.id;
+
+const price = product.price
+    ? `$${(product.price / 100).toFixed(2)}`
+    : "";
+
 card.innerHTML = `
     <div class="product-info">
-        <b>${product.name}</b>
+        <b>${product.name || "Smitten Item"}</b>
         <div class="price">${price}</div>
     </div>
 
     <button onclick="addToCart({
-        catalog_object_id: '${product.catalog_object_id}',
-        name: '${product.name}',
+        catalog_object_id: '${catalogId}',
+        name: '${product.name || "Smitten Item"}',
         price: ${product.price || 0}
     })">
         Add to Cart
