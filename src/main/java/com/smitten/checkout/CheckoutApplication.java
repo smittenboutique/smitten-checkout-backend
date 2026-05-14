@@ -2,7 +2,12 @@ package com.smitten.checkout;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@SpringBootApplication
+@EnableScheduling
+public class CheckoutApplication {
+	
 @SpringBootApplication
 public class CheckoutApplication {
 
@@ -10,4 +15,5 @@ public class CheckoutApplication {
 		SpringApplication.run(CheckoutApplication.class, args);
 	}
 
+}
 }
