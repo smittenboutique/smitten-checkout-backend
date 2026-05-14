@@ -487,13 +487,18 @@ function updateSubtotal() {
 }
     
 document.getElementById("continue").onclick = async () => {
+    const params = new URLSearchParams(window.location.search);
+    
     const checkoutButton = document.getElementById("continue");
-checkoutButton.disabled = true;
-checkoutButton.innerText = "Preparing checkout...";
-if (cart.length === 0) {
-    alert("Your cart is empty");
-    return;
-}
+    checkoutButton.disabled = true;
+    checkoutButton.innerText = "Preparing checkout...";
+
+    if (cart.length === 0) {
+        alert("Your cart is empty");
+        checkoutButton.disabled = false;
+        checkoutButton.innerText = "Continue to Checkout";
+        return;
+    }
     console.log("BUTTON CLICKED");
 
     try {
