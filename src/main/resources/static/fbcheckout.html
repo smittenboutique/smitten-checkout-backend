@@ -184,18 +184,16 @@ console.log("ITEMS:", items);
     card.className = "product-card";
 
     card.innerHTML = `
-    ${item.image_url ? `
-        <img src="${item.image_url}" class="product-image" />
-    ` : ""}
-
-        <div class="product-name">${item.name}</div>
-    `;
+    <div class="product-image">
+        Smitten
+    </div>
 
     <div class="product-info">
         <b>${name}</b>
         <div class="price">
             ${price ? `$${(price / 100).toFixed(2)}` : ""}
-        </div> </div>
+        </div>
+    </div>
 
     <button onclick="addToCart({
         catalog_object_id: '${catalogId}',
