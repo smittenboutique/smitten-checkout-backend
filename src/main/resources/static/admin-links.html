@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Smitten Link Builder</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #faf7f2;
+            padding: 40px;
+            color: #2f2a25;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        .product {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        .url {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #666;
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Smitten Checkout Link Builder</h1>
+
+<input
+    type="text"
+    id="search"
+    placeholder="Search products..."
+/>
+
+<div id="products"></div>
+
+<script>
+let catalog = [];
+
+async function loadCatalog() {
+
+    const res = await fetch("/api/catalog");
+    const data = await res.json();
+
+    const objects = data.objects || [];
+
+    catalog = [];
+
+    objects.forEach(obj => {
+
+        if (obj.type !== "ITEM") return;
+
+        const itemData = obj.item_data;
+        if (!itemData) return;
+
+        const variation = itemData.variations?.[0];
+        if (!variation) return;
+
+        catalog.push({
+            name: itemData.name,
+            variationId: variation.id
+        });
+    });
+
+    renderProducts(catalog);
+}
+
+function renderProducts(items) {
+
+    const container =
+        document.getElementById("products");
+
+    container.innerHTML = "";
+
+    items.forEach(item => {
+
+        const url =
+            window.location.origin +
+            `/fbcheckout?items=${item.variationId}:1`;
+
+        const div = document.createElement("div");
+
+        div.className = "product";
+
+        div.innerHTML = `
+            <b>${item.name}</b>
+
+            <div class="url">
+                ${url}
+            </div>
+
+            <button onclick="copyLink('${url}')">
+                Copy Link
+            </button>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+async function copyLink(url) {
+
+    await navigator.clipboard.writeText(url);
+
+    alert("Link copied!");
+}
+
+document.getElementById("search")
+    .addEventListener("input", e => {
+
+        const q =
+            e.target.value.toLowerCase();
+
+        const filtered = catalog.filter(item =>
+            item.name.toLowerCase().includes(q)
+        );
+
+        renderProducts(filtered);
+    });
+
+loadCatalog();
+</script>
+
+</body>
+</html>
