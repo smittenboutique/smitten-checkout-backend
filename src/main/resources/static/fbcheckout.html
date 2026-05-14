@@ -225,7 +225,11 @@ const rawItems = params.get("items");
 
 if (rawItems) {
     document.getElementById("products").style.display = "none";
-    return;
+
+hydrateCart(items);
+
+document.getElementById("status").innerText = "Cart ready";
+return;
 }
     
    items.forEach(obj => {
