@@ -34,8 +34,8 @@ public class SquareCheckoutService {
         throw new RuntimeException("Catalog sync failed: " + catalog.get("error"));
     }
 
-    List<Map<String, Object>> objects =
-            (List<Map<String, Object>>) catalog.get("objects");
+    List<Object>> objects =
+            (List<Object>>) catalog.get("objects");
 
     cache.clear();
 
@@ -43,43 +43,45 @@ public class SquareCheckoutService {
         return;
     }
 
-    for (Map<String, Object> obj : objects) {
+    for (Object> obj : objects) {
         String type = (String) obj.get("type");
 
         if (!"ITEM_VARIATION".equals(type)) {
             continue;
         }
 
-        Map<String, Object> variationData =
-                (Map<String, Object>) obj.get("item_variation_data");
+        Object> variationData =
+                (Object>) obj.get("item_variation_data");
 
         if (variationData == null) {
             continue;
         }
 
         Map<String, Object> product = new HashMap<>();
-        product.put("id", obj.get("id"));
-        product.put("catalog_object_id", obj.get("id"));
-        product.put("name", variationData.getOrDefault("name", "Smitten Item"));
 
-        String name = product.get("name").toString();
-        String slug = name
-            .toLowerCase()
-            .replace(" ", "-")
-            .replaceAll("[^a-z0-9\\-]", "");
+String name = String.valueOf(
+        variationData.getOrDefault("name", "Smitten Item")
+);
 
+String slug = name
+        .toLowerCase()
+        .replace(" ", "-")
+        .replaceAll("[^a-z0-9\\-]", "");
+
+product.put("id", obj.get("id"));
+product.put("catalog_object_id", obj.get("id"));
+product.put("name", name);
 product.put("slug", slug);
-        
-        Map<String, Object> priceMoney =
-                (Map<String, Object>) variationData.get("price_money");
 
-        if (priceMoney != null) {
-            product.put("price", priceMoney.get("amount"));
-            product.put("currency", priceMoney.get("currency"));
-        }
+Map<String, Object> priceMoney =
+        (Map<String, Object>) variationData.get("price_money");
 
-        cache.put((String) obj.get("id"), product);
-    }
+if (priceMoney != null) {
+    product.put("price", priceMoney.get("amount"));
+    product.put("currency", priceMoney.get("currency"));
+}
+
+cache.put((String) obj.get("id"), product);
 
 
 public Map<String, Object> getCatalog() {
