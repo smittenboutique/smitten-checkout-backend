@@ -506,8 +506,13 @@ if (cart.length === 0) {
                 "Content-Type": "application/json"
             },
 
-            body: JSON.stringify({
-                items: cart.map(i => ({
+            const params = new URLSearchParams(window.location.search);
+
+body: JSON.stringify({
+    source: params.get("source"),
+    campaign: params.get("campaign"),
+
+    items: cart.map(i => ({
                     catalog_object_id: i.catalog_object_id,
                     quantity: i.qty
                 }))
