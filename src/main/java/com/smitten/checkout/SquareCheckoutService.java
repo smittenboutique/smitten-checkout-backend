@@ -90,7 +90,7 @@ public Map<String, Object> getCatalog() {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = "squareBaseUrl() + "/v2/catalog/list?types=ITEM,ITEM_VARIATION,IMAGE";
+        String url = squareBaseUrl() + "/v2/catalog/list?types=ITEM,ITEM_VARIATION,IMAGE";
 
         ResponseEntity<Map> response =
                 restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
