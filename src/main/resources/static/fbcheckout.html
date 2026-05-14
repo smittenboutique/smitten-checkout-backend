@@ -152,19 +152,13 @@ async function loadCatalog() {
 
         card.className = "product-card";
 
-const price = product.price
-    ? `$${(product.price / 100).toFixed(2)}`
-    : "";
+        const catalogId = product.catalog_object_id || product.id;
 
-card.className = "product-card";
+        const price = product.price
+            ? `$${(product.price / 100).toFixed(2)}`
+        : "";
 
-const catalogId = product.catalog_object_id || product.id;
-
-const price = product.price
-    ? `$${(product.price / 100).toFixed(2)}`
-    : "";
-
-card.innerHTML = `
+card.innerHT    ML = `
     <div class="product-info">
         <b>${product.name || "Smitten Item"}</b>
         <div class="price">${price}</div>
