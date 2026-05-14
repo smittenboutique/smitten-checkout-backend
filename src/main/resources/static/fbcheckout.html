@@ -28,7 +28,7 @@
 }
 
 .logo-image {
-    height: 42px;
+    height: 64px;
     width: auto;
     display: block;
 }
@@ -45,7 +45,7 @@
     text-transform: uppercase;
     letter-spacing: .16em;
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 300;
 }
 
 .site-header nav a:hover {
@@ -564,38 +564,40 @@ async function copyProductLink(catalogId) {
 function renderCart() {
 
     const container = document.getElementById("cart");
-const productLink = i.name
-    ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
-    : "https://www.thesmittenboutique.com";
     container.innerHTML = "";
-
+    
     cart.forEach((i, index) => {
-
         const div = document.createElement("div");
-
-        div.className = "cart-row";
+        div.className = "cart-row";        
 
         const price = i.price
-    ? `$${((i.price * i.qty) / 100).toFixed(2)}`
-    : "";
-
+            ? `$${((i.price * i.qty) / 100).toFixed(2)}`
+            : "";
+      
+        const productLink = i.name
+            ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
+            : "https://www.thesmittenboutique.com";
+            container.innerHTML = "";
+       
 div.innerHTML = `
-    <div>
-        <b>${i.name || i.catalog_object_id}</b><br/>
-        <span class="price">${price}</span>
-    </div>
+            <div>
+                <b>${i.name || i.catalog_object_id}</b><br/>
+                <span class="price">${price}</span><br/>
+                <a class="product-link" href="${productLink}" target="_blank">
+                    View product
+                </a>
+            </div>
 
-    <div class="qty-controls">
-        <button onclick="decreaseQty(${index})">-</button>
-        <span>${i.qty}</span>
-        <button onclick="increaseQty(${index})">+</button>
-    </div>
-    <a class="product-link" href="${productLink}" target="_blank">
-    View product
-</a>
-`;
+            <div class="qty-controls">
+                <button onclick="decreaseQty(${index})">-</button>
+                <span>${i.qty}</span>
+                <button onclick="increaseQty(${index})">+</button>
+            </div>
+        `;
+
         container.appendChild(div);
     });
+
 
     document.getElementById("status").innerText =
         cart.length ? "Ready to checkout" : "Cart empty";
