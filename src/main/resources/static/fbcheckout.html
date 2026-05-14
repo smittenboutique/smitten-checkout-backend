@@ -501,6 +501,7 @@ document.getElementById("continue").onclick = async () => {
 body: JSON.stringify({
     source: params.get("source"),
     campaign: params.get("campaign"),
+    coupon: params.get("coupon") || params.get("discount") || params.get("promo"),
 
     items: cart.map(i => ({
                     catalog_object_id: i.catalog_object_id,
