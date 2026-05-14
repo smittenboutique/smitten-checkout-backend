@@ -12,6 +12,65 @@
         color: #2f2a25;
     }
 
+    .site-header,
+.site-footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Brandon Grotesque', sans-serif;
+}
+
+.logo {
+    color: #2f2a25;
+    text-decoration: none;
+    letter-spacing: .22em;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.site-header nav {
+    display: flex;
+    gap: 22px;
+}
+
+.site-header nav a,
+.site-footer a {
+    color: #2f2a25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 11px;
+}
+
+.site-footer {
+    border-top: 1px solid #eadfd5;
+    color: #8a7466;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+    .site-header,
+    .site-footer {
+        display: block;
+        text-align: center;
+    }
+
+    .site-header nav {
+        justify-content: center;
+        margin-top: 14px;
+    }
+
+    .site-footer a {
+        display: block;
+        margin-top: 12px;
+    }
+}
+
     .page {
         max-width: 1100px;
         margin: 0 auto;
@@ -199,14 +258,24 @@
 </head>
 
 <body>
+    <header class="site-header">
+    <a href="https://www.thesmittenboutique.com" class="logo">
+        SMITTEN
+    </a>
+
+    <nav>
+        <a href="https://www.thesmittenboutique.com">Shop</a>
+        <a href="https://www.thesmittenboutique.com/s/contact">Contact</a>
+    </nav>
+</header>
 <div class="page">
 
 <div id="status">Loading...</div>
 
-<h3>Products</h3>
+<h2>Products</h2>
 <div id="products"></div>
 
-<h3>Cart</h3>
+<h2>Cart</h2>
 <div id="cart"></div>
 <div id="subtotal"></div>
 <button id="continue">Continue to Checkout</button>
@@ -320,7 +389,10 @@ return;
         "Catalog loaded";
 }
     function preloadCartFromUrl() {
-
+console.log("FULL URL:", window.location.href);
+console.log("QUERY PARAMS:", Object.fromEntries(
+    new URLSearchParams(window.location.search)
+));
     const params = new URLSearchParams(window.location.search);
     const rawItems =
     params.get("items") ||
@@ -346,19 +418,17 @@ return;
 
         const product = catalogItems.find(p => {
 
-            if (p.catalog_object_id === cartItem.catalog_object_id) {
-                return true;
-            }
+    const itemData = p.item_data;
+    const variation = itemData?.variations?.[0];
 
-            if (p.id === cartItem.catalog_object_id) {
-                return true;
-            }
-
-            const itemData = p.item_data;
-            const variation = itemData?.variations?.[0];
-
-            return variation?.id === cartItem.catalog_object_id;
-        });
+    return (
+        p.id === cartItem.catalog_object_id ||
+        p.catalog_object_id === cartItem.catalog_object_id ||
+        variation?.id === cartItem.catalog_object_id ||
+        itemData?.product_type === cartItem.catalog_object_id ||
+        itemData?.name === cartItem.catalog_object_id
+    );
+});
 
         if (!product) return cartItem;
 
@@ -437,7 +507,9 @@ async function copyProductLink(catalogId) {
 function renderCart() {
 
     const container = document.getElementById("cart");
-
+const productLink = i.name
+    ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
+    : "https://www.thesmittenboutique.com";
     container.innerHTML = "";
 
     cart.forEach((i, index) => {
@@ -461,6 +533,9 @@ div.innerHTML = `
         <span>${i.qty}</span>
         <button onclick="increaseQty(${index})">+</button>
     </div>
+    <a class="product-link" href="${productLink}" target="_blank">
+    View product
+</a>
 `;
         container.appendChild(div);
     });
@@ -609,5 +684,11 @@ preloadCartFromUrl();
 loadCatalog();
     
 </script>
+
+    <footer class="site-footer">
+    <div>Thank you for shopping Smitten</div>
+    <a href="https://www.thesmittenboutique.com">Return to boutique</a>
+</footer>
+
 </body>
 </html>
