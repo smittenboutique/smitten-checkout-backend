@@ -205,8 +205,10 @@ console.log("ITEMS:", items);
 
     container.appendChild(card);
 });
+    hydrateCart(items);
     document.getElementById("status").innerText =
         "Catalog loaded";
+}
     function preloadCartFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const rawItems = params.get("items");
@@ -247,9 +249,8 @@ console.log("ITEMS:", items);
 
     saveCart();
     renderCart();
-        hydrateCart(items);
-}
-}
+    }
+
 
     let cart = JSON.parse(
     localStorage.getItem("smitten_cart") || "[]"
@@ -405,12 +406,11 @@ if (cart.length === 0) {
     }
 };
 
-renderCart();
-    saveCart();
+saveCart();
 preloadCartFromUrl();
 loadCatalog();
 renderCart();
+    
 </script>
-
 </body>
 </html>
