@@ -137,7 +137,7 @@ async function loadCatalog() {
     const container = document.getElementById("products");
     container.innerHTML = "";
 
-    const items = data.products || [];
+    const items = data.products || data.objects || [];
 console.log("CATALOG DATA:", data);
 console.log("ITEMS:", items);
     items.forEach(products => {
