@@ -166,6 +166,7 @@ console.log("ITEMS:", items);
     if (obj.type !== "ITEM") return;
 
     const itemData = obj.item_data;
+       console.log("ITEM IMAGE IDS:", itemData.image_ids);
     if (!itemData) return;
 
     const variation = itemData.variations?.[0];
