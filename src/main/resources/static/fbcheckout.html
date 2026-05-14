@@ -207,8 +207,6 @@
 </div>
 <script>
 async function loadCatalog() {
-const params = new URLSearchParams(window.location.search);
-    const rawItems = params.get("items");
 
     if (!rawItems) {
 
@@ -323,7 +321,12 @@ return;
         "Catalog loaded";
 }
     function preloadCartFromUrl() {
-    
+
+    const params = new URLSearchParams(window.location.search);
+    const rawItems = params.get("items");
+
+    if (!rawItems) return;
+
     cart = rawItems.split(",").map(entry => {
         const [catalog_object_id, qty] = entry.split(":");
 
