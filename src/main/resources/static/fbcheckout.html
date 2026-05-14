@@ -140,43 +140,45 @@ async function loadCatalog() {
     const items = data.products || data.objects || [];
 console.log("CATALOG DATA:", data);
 console.log("ITEMS:", items);
-    items.forEach(products => {
+   items.forEach(obj => {
 
-        if (obj.type !== "ITEM") return;
+    if (obj.type !== "ITEM") return;
 
-        const itemData = obj.item_data;
-        const variation = itemData.variations?.[0];
+    const itemData = obj.item_data;
+    if (!itemData) return;
 
-        if (!variation) return;
+    const variation = itemData.variations?.[0];
+    if (!variation) return;
 
-        const card = document.createElement("div");
+    const variationData = variation.item_variation_data || {};
+    const priceMoney = variationData.price_money || {};
 
-        card.className = "product-card";
+    const catalogId = variation.id;
+    const name = itemData.name || "Smitten Item";
+    const price = priceMoney.amount || 0;
 
-        const catalogId = product.catalog_object_id || product.id;
+    const card = document.createElement("div");
+    card.className = "product-card";
 
-        const price = product.price
-            ? `$${(product.price / 100).toFixed(2)}`
-        : "";
+    card.innerHTML = `
+        <div class="product-info">
+            <b>${name}</b>
+            <div class="price">
+                ${price ? `$${(price / 100).toFixed(2)}` : ""}
+            </div>
+        </div>
 
-card.innerHTML = `
-    <div class="product-info">
-        <b>${product.name || "Smitten Item"}</b>
-        <div class="price">${price}</div>
-    </div>
+        <button onclick="addToCart({
+            catalog_object_id: '${catalogId}',
+            name: '${name}',
+            price: ${price}
+        })">
+            Add to Cart
+        </button>
+    `;
 
-    <button onclick="addToCart({
-        catalog_object_id: '${catalogId}',
-        name: '${product.name || "Smitten Item"}',
-        price: ${product.price || 0}
-    })">
-        Add to Cart
-    </button>
-`;
-
-        container.appendChild(card);
-    });
-
+    container.appendChild(card);
+});
     document.getElementById("status").innerText =
         "Catalog loaded";
 }
