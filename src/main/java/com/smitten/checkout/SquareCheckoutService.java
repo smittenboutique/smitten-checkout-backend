@@ -72,6 +72,13 @@ public class SquareCheckoutService {
 
         cache.put((String) obj.get("id"), product);
     }
+        String name = itemData.get("name").toString();
+
+String slug = name
+    .toLowerCase()
+    .replace(" ", "-")
+    .replaceAll("[^a-z0-9\\-]", "");
+        product.put("slug", slug);
 }
 
 public Map<String, Object> getCatalog() {
