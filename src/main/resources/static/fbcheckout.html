@@ -158,7 +158,7 @@ async function loadCatalog() {
             ? `$${(product.price / 100).toFixed(2)}`
         : "";
 
-card.innerHT    ML = `
+card.innerHTML = `
     <div class="product-info">
         <b>${product.name || "Smitten Item"}</b>
         <div class="price">${price}</div>
