@@ -261,7 +261,9 @@ async function loadCatalog() {
         Add to Cart
     </button>
 `;
-
+<button onclick="copyProductLink('${catalogId}')">
+    Copy Product Link
+</button>
     container.appendChild(card);
 });
     hydrateCart(items);
@@ -342,7 +344,22 @@ function addToCart(item) {
     renderCart();
     saveCart();
 }
+async function copyProductLink(catalogId) {
 
+    const url =
+        window.location.origin +
+        `/fbcheckout?items=${catalogId}:1`;
+
+    try {
+        await navigator.clipboard.writeText(url);
+
+        alert("Product link copied!");
+
+    } catch (err) {
+        console.error(err);
+        alert(url);
+    }
+}
 function renderCart() {
 
     const container = document.getElementById("cart");
