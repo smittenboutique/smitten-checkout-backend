@@ -162,7 +162,21 @@ if (imageId != null) {
             Map<String, Object> order = new HashMap<>();
             order.put("location_id", locationId);
             order.put("line_items", lineItems);
+            
+String coupon = (String) body.get("coupon");
 
+if ("WELCOME".equalsIgnoreCase(coupon)) {
+    order.put("discounts", List.of(
+        Map.of(
+            "uid", "WELCOME",
+            "name", "WELCOME 10% OFF",
+            "type", "FIXED_PERCENTAGE",
+            "percentage", "10",
+            "scope", "ORDER"
+        )
+    ));
+}
+            
             Map<String, Object> request = new HashMap<>();
             String source = (String) body.get("source");
 String campaign = (String) body.get("campaign");
