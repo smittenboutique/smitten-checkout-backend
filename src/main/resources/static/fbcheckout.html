@@ -507,6 +507,7 @@ if (cart.length === 0) {
             },
 
             const params = new URLSearchParams(window.location.search);
+        const rawItems = params.get("items");
 
 body: JSON.stringify({
     source: params.get("source"),
