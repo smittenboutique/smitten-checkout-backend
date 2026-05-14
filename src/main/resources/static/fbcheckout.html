@@ -252,7 +252,9 @@ async function loadCatalog() {
             ${price ? `$${(price / 100).toFixed(2)}` : ""}
         </div>
     </div>
-
+<button onclick="copyProductLink('${catalogId}')">
+    Copy Product Link
+</button>
     <button onclick="addToCart({
         catalog_object_id: '${catalogId}',
         name: '${name}',
@@ -261,9 +263,6 @@ async function loadCatalog() {
         Add to Cart
     </button>
 `;
-<button onclick="copyProductLink('${catalogId}')">
-    Copy Product Link
-</button>
     container.appendChild(card);
 });
     hydrateCart(items);
