@@ -464,10 +464,13 @@ if (cart.length === 0) {
         console.log(data);
 
         if (data.success) {
-            localStorage.removeItem("smitten_cart");
-            window.location.href = data.checkout_url;
+    sessionStorage.setItem(
+        "checkout_started",
+        "true"
+    );
 
-        } else {
+    window.location.href = data.checkout_url;
+} else {
 
             alert("Checkout failed: " + (data.error || "Please try again."));
             checkoutButton.disabled = false;
