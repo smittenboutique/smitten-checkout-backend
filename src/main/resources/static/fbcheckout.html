@@ -133,6 +133,30 @@
         font-size: 17px;
         font-weight: 400;
     }
+    
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eadfd5;
+}
+
+.cart-info {
+    flex: 1;
+}
+
+.cart-title {
+    color: #2f2a25;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.variant-info {
+    color: #8a7466;
+    font-size: 13px;
+    margin-top: 4px;
+}
 
     .price {
         margin: 8px 0 14px;
@@ -219,7 +243,7 @@
         border: 0;
         padding: 16px 20px;
         font-weight: 600;
-        border-radius: 8px;
+        border-radius: 999px;
     }
 
     #status {
@@ -263,12 +287,25 @@
         justify-content: space-between;
     }
 
-    .qty-controls button {
+.qty-btn {
     background: #c5aa78;
     color: white;
     border: none;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 6px;
-    }
+    font-weight: 600;
+    cursor: pointer;
+
+    padding: 0;
+    line-height: 1;
+}
 
     button {
         width: 100%;
@@ -309,25 +346,19 @@
 
     <nav>
         <a href="https://www.thesmittenboutique.com">
-            Shop
-        </a>
-
-        <a href="https://www.thesmittenboutique.com/s/contact">
-            Contact
+            Keep Shopping
         </a>
     </nav>
 
 </header>
 <div class="page">
 
-<div id="status">Loading...</div>
-
-<h3>Products</h3>
-<div id="products"></div>
-
-<h3>Cart</h3>
+<h3>Shopping Bag</h3>
+    <div id="status">Loading...</div>
 <div id="cart"></div>
+    
 <div id="subtotal"></div>
+    
 <button id="continue">Continue to Checkout</button>
 
 <!-- your script stays here -->
@@ -342,9 +373,9 @@ async function loadCatalog() {
     params.get("product") ||
     params.get("products");
 
-    if (!rawItems) {
+/*     if (!rawItems) {
 
-        document.getElementById("status").innerHTML = `
+           document.getElementById("status").innerHTML = `
             <div style="padding:40px 0;text-align:center;">
                 <p style="
                     letter-spacing:.08em;
@@ -364,7 +395,7 @@ async function loadCatalog() {
         document.getElementById("continue").style.display = "none";
 
         return;
-    }
+    } */
 
     // fetch catalog
 
@@ -376,8 +407,8 @@ async function loadCatalog() {
         return;
     }
 
-    const container = document.getElementById("products");
-    container.innerHTML = "";
+/*    const container = document.getElementById("products");
+    container.innerHTML = ""; */
 
     const items = data.products || data.objects || [];
 
@@ -386,7 +417,8 @@ if (rawItems) {
 
 hydrateCart(items);
 
-document.getElementById("status").innerText = "Cart ready";
+//document.getElementById("status").innerText = "Cart ready";
+    
 return;
 }
     
@@ -496,6 +528,8 @@ if (!product) {
             return {
                 ...cartItem,
                 name: product.item_data.name,
+                variantName:
+                variation.item_variation_data?.name || "",
                 price: priceMoney.amount || 0,
                 image_url: product.image_url || cartItem.image_url
             };
@@ -575,25 +609,31 @@ function renderCart() {
             : "";
       
         const productLink = i.name
-            ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
-            : "https://www.thesmittenboutique.com";
-            container.innerHTML = "";
+    ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
+    : "https://www.thesmittenboutique.com";
+
+const displayName = i.name || i.catalog_object_id;
+const variantInfo = i.variantName && i.variantName !== "Regular"
+    ? i.variantName
+    : "";
        
 div.innerHTML = `
-            <div>
-                <b>${i.name || i.catalog_object_id}</b><br/>
-                <span class="price">${price}</span><br/>
-                <a class="product-link" href="${productLink}" target="_blank">
-                    View product
-                </a>
-            </div>
+    <div class="cart-info">
+        <a class="cart-title" href="${productLink}" target="_blank">
+            ${displayName}
+        </a>
 
-            <div class="qty-controls">
-                <button onclick="decreaseQty(${index})">-</button>
-                <span>${i.qty}</span>
-                <button onclick="increaseQty(${index})">+</button>
-            </div>
-        `;
+        ${variantInfo ? `<div class="variant-info">${variantInfo}</div>` : ""}
+
+        <span class="price">${price}</span>
+    </div>
+
+    <div class="qty-controls">
+        <button class="qty-btn" onclick="decreaseQty(${index})">-</button>
+        <span>${i.qty}</span>
+        <button class="qty-btn" onclick="increaseQty(${index})">+</button>
+    </div>
+`;
 
         container.appendChild(div);
     });
@@ -659,7 +699,8 @@ function updateSubtotal() {
                         ? `<div>WELCOME Discount: -$${(discount / 100).toFixed(2)}</div>`
                         : ""
                 }
-                <div><b>Total: $${(total / 100).toFixed(2)}</b></div>
+                <div style="color: #c5aa78;">Total: $${(total / 100).toFixed(2)}</div>
+                <div style="font-size: 13px;">Tax calculated at checkout</div>
             `
             : "";
 }
