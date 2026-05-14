@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="data:,">
     <title>Checkout</title>
 <style>
     @import url('https://fonts.cdnfonts.com/css/brandon-grotesque');
@@ -160,14 +161,12 @@ async function loadCatalog() {
     container.innerHTML = "";
 
     const items = data.products || data.objects || [];
-console.log("CATALOG DATA:", data);
-console.log("ITEMS:", items);
    items.forEach(obj => {
 
     if (obj.type !== "ITEM") return;
 
     const itemData = obj.item_data;
-       console.log("ITEM IMAGE IDS:", itemData.image_ids);
+       
     if (!itemData) return;
 
     const variation = itemData.variations?.[0];
