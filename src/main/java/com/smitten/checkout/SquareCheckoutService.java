@@ -62,6 +62,14 @@ public class SquareCheckoutService {
         product.put("catalog_object_id", obj.get("id"));
         product.put("name", variationData.getOrDefault("name", "Smitten Item"));
 
+        String name = product.get("name").toString();
+        String slug = name
+            .toLowerCase()
+            .replace(" ", "-")
+            .replaceAll("[^a-z0-9\\-]", "");
+
+product.put("slug", slug);
+        
         Map<String, Object> priceMoney =
                 (Map<String, Object>) variationData.get("price_money");
 
@@ -72,14 +80,7 @@ public class SquareCheckoutService {
 
         cache.put((String) obj.get("id"), product);
     }
-        String name = itemData.get("name").toString();
 
-String slug = name
-    .toLowerCase()
-    .replace(" ", "-")
-    .replaceAll("[^a-z0-9\\-]", "");
-        product.put("slug", slug);
-}
 
 public Map<String, Object> getCatalog() {
     Map<String, Object> result = new HashMap<>();
