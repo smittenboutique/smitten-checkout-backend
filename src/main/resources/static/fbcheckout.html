@@ -715,18 +715,27 @@ function updateSubtotal() {
     const total = subtotal - discount;
 
     document.getElementById("subtotal").innerHTML =
-        cart.length
-            ? `
-                <div>Subtotal: $${(subtotal / 100).toFixed(2)}</div>
-                ${
-                    discount
-                        ? `<div>WELCOME Discount: -$${(discount / 100).toFixed(2)}</div>`
-                        : ""
-                }
-                <div style="color: #c5aa78;">Total: $${(total / 100).toFixed(2)}</div>
-                <div style="font-size: 13px;">Tax calculated at checkout</div>
-            `
-            : "";
+    cart.length
+        ? `
+            <div>
+                Subtotal: $${(subtotal / 100).toFixed(2)}
+            </div>
+
+            ${
+                discount
+                    ? `
+                        <div style="color: #c5aa78;">
+                            Discount: -$${(discount / 100).toFixed(2)}
+                        </div>
+                    `
+                    : ""
+            }
+
+            <div style="font-size: 13px;">
+                Tax calculated at checkout
+            </div>
+        `
+        : "";
 }
 
     function productUrlFromName(name) {
