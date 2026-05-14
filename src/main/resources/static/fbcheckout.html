@@ -343,27 +343,48 @@ return;
 }
     function hydrateCart(catalogItems) {
     cart = cart.map(cartItem => {
+
         const product = catalogItems.find(p => {
+
+            if (p.catalog_object_id === cartItem.catalog_object_id) {
+                return true;
+            }
+
+            if (p.id === cartItem.catalog_object_id) {
+                return true;
+            }
+
             const itemData = p.item_data;
             const variation = itemData?.variations?.[0];
+
             return variation?.id === cartItem.catalog_object_id;
         });
 
         if (!product) return cartItem;
 
-        const variation = product.item_data.variations[0];
-        const priceMoney = variation.item_variation_data?.price_money || {};
+        if (product.item_data) {
+            const variation = product.item_data.variations?.[0];
+            const priceMoney = variation?.item_variation_data?.price_money || {};
+
+            return {
+                ...cartItem,
+                name: product.item_data.name,
+                price: priceMoney.amount || 0,
+                image_url: product.image_url || cartItem.image_url
+            };
+        }
 
         return {
             ...cartItem,
-            name: product.item_data.name,
-            price: priceMoney.amount || 0
+            name: product.name || cartItem.name,
+            price: product.price || cartItem.price || 0,
+            image_url: product.image_url || cartItem.image_url
         };
     });
 
     saveCart();
     renderCart();
-    }
+}
 
 
     let cart = JSON.parse(
@@ -472,14 +493,40 @@ function decreaseQty(index) {
     saveCart();
 }
     
+function getCouponCode() {
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+        params.get("coupon") ||
+        params.get("discount") ||
+        params.get("promo")
+    );
+}
+
 function updateSubtotal() {
     const subtotal = cart.reduce((sum, item) => {
         return sum + ((item.price || 0) * item.qty);
     }, 0);
 
-    document.getElementById("subtotal").innerText =
+    const coupon = getCouponCode();
+    const discount =
+        coupon && coupon.toUpperCase() === "WELCOME"
+            ? Math.round(subtotal * 0.10)
+            : 0;
+
+    const total = subtotal - discount;
+
+    document.getElementById("subtotal").innerHTML =
         cart.length
-            ? `Subtotal: $${(subtotal / 100).toFixed(2)}`
+            ? `
+                <div>Subtotal: $${(subtotal / 100).toFixed(2)}</div>
+                ${
+                    discount
+                        ? `<div>WELCOME Discount: -$${(discount / 100).toFixed(2)}</div>`
+                        : ""
+                }
+                <div><b>Total: $${(total / 100).toFixed(2)}</b></div>
+            `
             : "";
 }
 
