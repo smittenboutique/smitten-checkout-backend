@@ -164,7 +164,23 @@ if (imageId != null) {
             order.put("line_items", lineItems);
 
             Map<String, Object> request = new HashMap<>();
+            String source = (String) body.get("source");
+String campaign = (String) body.get("campaign");
             request.put("order", order);
+            if (source != null || campaign != null) {
+
+    Map<String, String> metadata = new HashMap<>();
+
+    if (source != null) {
+        metadata.put("source", source);
+    }
+
+    if (campaign != null) {
+        metadata.put("campaign", campaign);
+    }
+
+    order.put("metadata", metadata);
+}
             request.put("idempotency_key", UUID.randomUUID().toString());
             String appBaseUrl = System.getenv("APP_BASE_URL");
 
