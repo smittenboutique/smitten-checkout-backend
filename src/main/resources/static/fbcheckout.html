@@ -19,7 +19,7 @@
 
     h2 {
         font-size: 34px;
-        font-weight: 250;
+        font-weight: 300;
         letter-spacing: .04em;
     }
 
@@ -43,14 +43,14 @@
     .product-card b,
     .cart-row b {
         font-size: 16px;
-        font-weight: 250;
+        font-weight: 300;
         letter-spacing: .02em;
     }
 
     .product-card b,
     .cart-row b {
         font-size: 17px;
-        font-weight: 200;
+        font-weight: 400;
     }
 
     .price {
@@ -150,20 +150,26 @@ async function loadCatalog() {
 
         const card = document.createElement("div");
 
-        card.className = "item";
+        card.className = "product-card";
 
-        card.innerHTML = `
-            <div>
-                <b>${itemData.name}</b><br/>
-                ${variation.id}
-            </div>
+const price = product.price
+    ? `$${(product.price / 100).toFixed(2)}`
+    : "";
 
-            <button onclick="addToCart({
-                catalog_object_id: '${variation.id}'
-            })">
-                Add
-            </button>
-        `;
+card.innerHTML = `
+    <div class="product-info">
+        <b>${product.name}</b>
+        <div class="price">${price}</div>
+    </div>
+
+    <button onclick="addToCart({
+        catalog_object_id: '${product.catalog_object_id}',
+        name: '${product.name}',
+        price: ${product.price || 0}
+    })">
+        Add to Cart
+    </button>
+`;
 
         container.appendChild(card);
     });
@@ -172,7 +178,7 @@ async function loadCatalog() {
         "Catalog loaded";
 }
 let cart = [];
-
+    
 function addToCart(item) {
 
     const existing = cart.find(i =>
@@ -184,6 +190,8 @@ function addToCart(item) {
     } else {
         cart.push({
             catalog_object_id: item.catalog_object_id,
+            name: item.name,
+            price: item.price,
             qty: 1
         });
     }
@@ -201,25 +209,24 @@ function renderCart() {
 
         const div = document.createElement("div");
 
-        div.className = "item";
+        div.className = "cart-row";
 
-        div.innerHTML = `
-            <div>
-                <b>${i.catalog_object_id.slice(0,8)}...</b><br/>
-                Qty: ${i.qty}
-            </div>
+        const price = i.price
+    ? `$${((i.price * i.qty) / 100).toFixed(2)}`
+    : "";
 
-            <div>
-                <button onclick="decreaseQty(${index})">-</button>
+div.innerHTML = `
+    <div>
+        <b>${i.name || i.catalog_object_id}</b><br/>
+        <span class="price">${price}</span>
+    </div>
 
-                <span style="margin:0 8px;">
-                    ${i.qty}
-                </span>
-
-                <button onclick="increaseQty(${index})">+</button>
-            </div>
-        `;
-
+    <div class="qty-controls">
+        <button onclick="decreaseQty(${index})">-</button>
+        <span>${i.qty}</span>
+        <button onclick="increaseQty(${index})">+</button>
+    </div>
+`;
         container.appendChild(div);
     });
 
