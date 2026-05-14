@@ -14,10 +14,10 @@ public class CheckoutController {
 
 private final SquareCheckoutService squareService;
 private final SquareCatalogCache cache;
-
+    
 public CheckoutController(
-    SquareCheckoutService squareService,
-    SquareCatalogCache cache
+        SquareCheckoutService squareService,
+        SquareCatalogCache cache
 ) {
     this.squareService = squareService;
     this.cache = cache;
