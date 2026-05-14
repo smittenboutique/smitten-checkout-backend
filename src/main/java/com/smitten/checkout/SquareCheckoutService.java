@@ -15,19 +15,19 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-    private String squareBaseUrl() {
-    String env = System.getenv("SQUARE_ENV");
-
-    if ("production".equalsIgnoreCase(env)) {
-        return "https://connect.squareup.com";
-    }
-
-    return "https://connect.squareupsandbox.com";
-}
-
 public class SquareCheckoutService {
 
-public void syncCatalog(SquareCatalogCache cache) {
+    private String squareBaseUrl() {
+        String env = System.getenv("SQUARE_ENV");
+
+        if ("production".equalsIgnoreCase(env)) {
+            return "https://connect.squareup.com";
+        }
+
+        return "https://connect.squareupsandbox.com";
+    }
+
+    public void syncCatalog(SquareCatalogCache cache) {
     Map<String, Object> catalog = getCatalog();
 
     if (!Boolean.TRUE.equals(catalog.get("success"))) {
