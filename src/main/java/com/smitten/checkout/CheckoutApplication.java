@@ -7,13 +7,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class CheckoutApplication {
-	
-@SpringBootApplication
-public class CheckoutApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CheckoutApplication.class, args);
 	}
 
-}
 }
