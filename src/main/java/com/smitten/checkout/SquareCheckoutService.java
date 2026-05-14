@@ -21,7 +21,7 @@ public class SquareCheckoutService {
 
     public void syncCatalog(SquareCatalogCache cache) {
         Map<String, Object> catalog = getCatalog();
-
+Map<String, String> imageMap = new HashMap<>();
         if (!Boolean.TRUE.equals(catalog.get("success"))) {
             throw new RuntimeException("Catalog sync failed: " + catalog.get("error"));
         }
@@ -37,7 +37,24 @@ public class SquareCheckoutService {
 
         for (Map<String, Object> obj : objects) {
             String type = (String) obj.get("type");
+if ("IMAGE".equals(type)) {
 
+    Map<String, Object> imageData =
+            (Map<String, Object>) obj.get("image_data");
+
+    if (imageData != null) {
+
+        String imageUrl =
+                (String) imageData.get("url");
+
+        imageMap.put(
+                (String) obj.get("id"),
+                imageUrl
+        );
+    }
+
+    continue;
+}
             if (!"ITEM_VARIATION".equals(type)) {
                 continue;
             }
@@ -53,6 +70,12 @@ public class SquareCheckoutService {
             product.put("id", obj.get("id"));
             product.put("catalog_object_id", obj.get("id"));
             product.put("name", variationData.getOrDefault("name", "Smitten Item"));
+            String imageId =
+        (String) variationData.get("image_id");
+
+if (imageId != null) {
+    product.put("image_url", imageMap.get(imageId));
+}
 
             Map<String, Object> priceMoney =
                     (Map<String, Object>) variationData.get("price_money");
