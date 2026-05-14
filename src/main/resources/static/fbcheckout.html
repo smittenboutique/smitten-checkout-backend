@@ -208,46 +208,51 @@
 <script>
 async function loadCatalog() {
 
+    const params = new URLSearchParams(window.location.search);
+    const rawItems = params.get("items");
+
     if (!rawItems) {
 
-    document.getElementById("status").innerHTML = `
-        <div style="padding:40px 0;text-align:center;">
-            <p style="
-                letter-spacing:.08em;
-                text-transform:uppercase;
-                font-size:12px;
-                color:#8a7466;
-                margin-bottom:18px;
-            ">
-                Your cart is empty
-            </p>
-
-            <a
-                href="https://www.thesmittenboutique.com"
-                style="
-                    display:inline-block;
-                    border:1px solid #2f2a25;
-                    background:#2f2a25;
-                    color:white;
-                    padding:14px 22px;
-                    text-decoration:none;
+        document.getElementById("status").innerHTML = `
+            <div style="padding:40px 0;text-align:center;">
+                <p style="
+                    letter-spacing:.08em;
                     text-transform:uppercase;
-                    letter-spacing:.14em;
-                    font-size:11px;
-                "
-            >
-                Keep Shopping
-            </a>
-        </div>
-    `;
+                    font-size:12px;
+                    color:#8a7466;
+                    margin-bottom:18px;
+                ">
+                    Your cart is empty
+                </p>
 
-    document.getElementById("products").style.display = "none";
-    document.getElementById("cart").style.display = "none";
-    document.getElementById("subtotal").style.display = "none";
-    document.getElementById("continue").style.display = "none";
+                <a
+                    href="https://www.thesmittenboutique.com"
+                    style="
+                        display:inline-block;
+                        border:1px solid #2f2a25;
+                        background:#2f2a25;
+                        color:white;
+                        padding:14px 22px;
+                        text-decoration:none;
+                        text-transform:uppercase;
+                        letter-spacing:.14em;
+                        font-size:11px;
+                    "
+                >
+                    Keep Shopping
+                </a>
+            </div>
+        `;
 
-    return;
-}
+        document.getElementById("products").style.display = "none";
+        document.getElementById("cart").style.display = "none";
+        document.getElementById("subtotal").style.display = "none";
+        document.getElementById("continue").style.display = "none";
+
+        return;
+    }
+
+    // fetch catalog
 
     const res = await fetch("/api/catalog");
     const data = await res.json();
