@@ -207,10 +207,30 @@ console.log("ITEMS:", items);
 });
     document.getElementById("status").innerText =
         "Catalog loaded";
+    function preloadCartFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const rawItems = params.get("items");
+
+    if (!rawItems) return;
+
+    cart = rawItems.split(",").map(entry => {
+        const [catalog_object_id, qty] = entry.split(":");
+
+        return {
+            catalog_object_id,
+            qty: Number(qty || 1)
+        };
+    });
+
+    saveCart();
+    renderCart();
 }
-let cart = JSON.parse(
+}
+
+    let cart = JSON.parse(
     localStorage.getItem("smitten_cart") || "[]"
 );
+    
     function saveCart() {
     localStorage.setItem(
         "smitten_cart",
@@ -363,7 +383,9 @@ if (cart.length === 0) {
 
 renderCart();
     saveCart();
+preloadCartFromUrl();
 loadCatalog();
+renderCart();
 </script>
 
 </body>
