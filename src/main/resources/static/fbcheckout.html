@@ -84,7 +84,6 @@
         margin-top: 10px;
         gap: 18px;
     }
-}
 
     .site-footer a {
         display: block;
@@ -393,30 +392,6 @@ async function loadCatalog() {
     params.get("product") ||
     params.get("products");
 
-/*     if (!rawItems) {
-
-           document.getElementById("status").innerHTML = `
-            <div style="padding:40px 0;text-align:center;">
-                <p style="
-                    letter-spacing:.08em;
-                    text-transform:uppercase;
-                    font-size:12px;
-                    color:#8a7466;
-                    margin-bottom:18px;
-                ">
-                    Your cart is empty
-                </p>
-            </div>
-        `;
-
-        document.getElementById("products").style.display = "none";
-        document.getElementById("cart").style.display = "none";
-        document.getElementById("subtotal").style.display = "none";
-        document.getElementById("continue").style.display = "none";
-
-        return;
-    } */
-
     // fetch catalog
 
     const res = await fetch("/api/catalog");
@@ -427,9 +402,6 @@ async function loadCatalog() {
         return;
     }
 
-/*    const container = document.getElementById("products");
-    container.innerHTML = ""; */
-
     const items = data.products || data.objects || [];
 
 if (rawItems) {
@@ -438,57 +410,9 @@ if (productsEl) {
     productsEl.style.display = "none";
 }
 
-hydrateCart(items);
-
-//document.getElementById("status").innerText = "Cart ready";
-    
+hydrateCart(items);    
 return;
 }
-    
-   items.forEach(obj => {
-
-    if (obj.type !== "ITEM") return;
-
-    const itemData = obj.item_data;
-       
-    if (!itemData) return;
-
-    const variation = itemData.variations?.[0];
-    if (!variation) return;
-
-    const variationData = variation.item_variation_data || {};
-    const priceMoney = variationData.price_money || {};
-
-    const catalogId = variation.id;
-    const name = itemData.name || "Smitten Item";
-    const price = priceMoney.amount || 0;
-
-    const card = document.createElement("div");
-    card.className = "product-card";
-
-    card.innerHTML = `
-    <div class="product-image">
-        Smitten
-    </div>
-
-    <div class="product-info">
-        <b>${name}</b>
-        <div class="price">
-            ${price ? `$${(price / 100).toFixed(2)}` : ""}
-        </div>
-    </div>
-    <button onclick="addToCart({
-        catalog_object_id: '${catalogId}',
-        name: '${name}',
-        price: ${price}
-    })">
-        <a class="button-link" href="${productUrlFromName(name)}">
-            View Product
-        </a>    
-    </button>
-`;
-    container.appendChild(card);
-});
     hydrateCart(items);
     document.getElementById("status").innerText =
         "Catalog loaded";
@@ -543,7 +467,9 @@ console.log("QUERY PARAMS:", Object.fromEntries(
                 matchedVariation = p;
             }
         });
-
+if (!matchedProduct || !matchedVariation) {
+    console.log("HYDRATION FAILED FOR:", cartItem.catalog_object_id);
+}
         if (!matchedProduct || !matchedVariation) {
             return cartItem;
         }
@@ -658,10 +584,6 @@ div.innerHTML = `
         container.appendChild(div);
     });
 
-
-/*    document.getElementById("status").innerText =
-        cart.length ? "Ready to checkout" : "Cart empty"; */
-
     updateSubtotal();
 
 document.getElementById("continue").disabled = cart.length === 0;
@@ -704,10 +626,20 @@ function updateSubtotal() {
     }, 0);
 
     const coupon = getCouponCode();
+
 const couponPercentages = {
     WELCOME: 10
 };
-    const shippingNote =
+
+const percent = coupon
+    ? couponPercentages[coupon.toUpperCase()]
+    : null;
+
+const discount = percent
+    ? Math.round(subtotal * (percent / 100))
+    : 0;
+
+const shippingNote =
     coupon?.toUpperCase() === "VIPSHIP"
         ? `
             <div style="color:#c5aa78;">
@@ -715,8 +647,6 @@ const couponPercentages = {
             </div>
         `
         : "";
-
-    const total = subtotal - discount;
 
     document.getElementById("subtotal").innerHTML =
     cart.length
