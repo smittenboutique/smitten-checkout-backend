@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="data:,">
+    <title>Shopping Bag</title>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/brandon-grotesque');
+    body {
+        font-family: 'Brandon Grotesque', sans-serif;
+        margin: 0;
+        background: transparent;
+        color: #2f2a25;
+    }
+
+    .site-header {
+    background: black;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo-wrap {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-image {
+    height: 64px;
+    width: auto;
+    display: block;
+}
+
+.site-header nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.site-header nav a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.site-header nav a:hover {
+    opacity: .75;
+}
+
+.site-footer {
+    border-top: 1px solid #eadfd5;
+    color: #8a7466;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+    .checkout-note {
+    margin-top: 18px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #8a7466;
+}
+
+@media (max-width: 640px) {
+
+    .site-header {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 22px 16px;
+    }
+    
+.site-footer {
+    background: black;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px 20px;
+}
+
+.logo-image {
+    height: 34px;
+}
+
+    .site-header nav {
+        margin-top: 10px;
+        gap: 18px;
+    }
+
+    .site-footer a {
+        display: block;
+        margin-top: 12px;
+    }
+}
+
+    .page {
+    min-height: calc(100vh - 180px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+    text-align: center;
+}
+
+    h2 {
+        font-size: 34px;
+        font-weight: 250;
+        letter-spacing: .04em;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+
+    h3 {
+        font-size: 18px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    #products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+    }
+
+    .product-card b,
+    .cart-row b {
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: .02em;
+    }
+
+    .product-card b,
+    .cart-row b {
+        font-size: 17px;
+        font-weight: 400;
+    }
+    
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eadfd5;
+}
+
+.cart-info {
+    flex: 1;
+    line-height: 1.65;
+}
+
+.cart-title {
+    color: #2f2a25;
+    text-decoration: none;
+    font-weight: 400;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+    
+.variant-info {
+    color: #2f2a25;
+    font-size: 13px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+
+    .price {
+    display: block;
+    margin-top: 6px;
+    color: #2f2a25;
+    font-weight: 400;
+}
+
+    button {
+        border: 1px solid #2f2a25;
+        background: #2f2a25;
+        color: white;
+        padding: 12px 18px;
+        font-family: 'Brandon Grotesque', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        font-size: 11px;
+        font-weight: 250;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    button:hover {
+        background: white;
+        color: #2f2a25;
+    }
+
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .qty-controls button,
+.qty-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+
+    padding: 0 !important;
+    line-height: 1 !important;
+
+    background: #c5aa78 !important;
+    color: white !important;
+    border: 0 !important;
+
+    border-radius: 50% !important;
+
+    font-size: 16px !important;
+}
+
+    .product-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: #f4efe8;
+    border: 1px solid #eadfd5;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9a8171;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.button-link {
+    display: block;
+    text-align: center;
+    border: 1px solid #2f2a25;
+    background: #2f2a25;
+    color: white;
+    padding: 12px 18px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 11px;
+}
+    
+#continue {
+    width: 100%;
+    max-width: 420px;
+}
+
+    #continue:hover {
+    background: black;
+    color: white;
+}
+
+    #status {
+        text-align: center;
+        font-family: 'Brandon Grotesque', sans-serif;
+        color: #8a7466;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 640px) {
+    .page {
+        padding: 24px 14px 48px;
+    }
+
+    h2 {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .subtitle {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    #products {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .product-card,
+    .cart-row {
+        padding: 16px;
+    }
+
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 24px 0;
+    border-bottom: 1px solid #eadfd5;
+}
+
+    .qty-controls {
+        margin-top: 14px;
+        justify-content: space-between;
+    }
+
+.qty-btn {
+    background: #c5aa78;
+    color: white;
+    border: none;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+
+    padding: 0;
+    line-height: 1;
+}
+
+    button {
+        width: 100%;
+        min-height: 46px;
+        border-radius: 999px;
+    }
+
+    #continue {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        margin-top: 24px;
+    }
+
+    #subtotal {
+        font-size: 16px;
+        text-align: center;
+        margin-top: 18px;
+        padding: 12px 0;
+    }
+}
+.qty-controls button,
+.qty-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    background: #c5aa78 !important;
+    color: white !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+}
+    
+</style>
+</head>
+
+<body>
+    <header class="site-header">
+
+    <a
+        href="https://www.thesmittenboutique.com"
+        class="logo-wrap"
+    >
+        <img
+            src="https://ef0c54a50a5a99fe62c8.cdn6.editmysite.com/uploads/b/ef0c54a50a5a99fe62c8cfe17f521cca97f804f3dd69d462788f1513b828c4e2/Logo-Gold_1766092768.png?width=2400&optimize=medium"
+            class="logo-image"
+            alt="Smitten Boutique"
+        />
+    </a>
+
+    <nav>
+        <a href="https://www.thesmittenboutique.com">
+            Keep Shopping
+        </a>
+    </nav>
+
+</header>
+<div class="page">
+
+<h3>Shopping Bag</h3>
+
+<div id="status" style="display:none;"></div>
+    
+<div id="cart"></div>
+    
+<div id="subtotal"></div>
+    
+<button id="continue">Continue to Checkout</button>
+
+<!-- your script stays here -->
+
+</div>
+<script>
+async function loadCatalog() {
+
+    const params = new URLSearchParams(window.location.search);
+    const rawItems =
+    params.get("items") ||
+    params.get("product") ||
+    params.get("products");
+
+    // fetch catalog
+
+    const res = await fetch("/api/catalog");
+    const data = await res.json();
+
+    if (!data.success) {
+        document.getElementById("status").innerText = "Catalog failed to load";
+        return;
+    }
+
+    const items = data.products || data.objects || [];
+
+if (rawItems) {
+    const productsEl = document.getElementById("products");
+if (productsEl) {
+    productsEl.style.display = "none";
+}
+
+hydrateCart(items);    
+return;
+}
+    hydrateCart(items);
+    document.getElementById("status").innerText =
+        "Catalog loaded";
+}
+    function preloadCartFromUrl() {
+console.log("FULL URL:", window.location.href);
+console.log("QUERY PARAMS:", Object.fromEntries(
+    new URLSearchParams(window.location.search)
+));
+    const params = new URLSearchParams(window.location.search);
+    const rawItems =
+    params.get("items") ||
+    params.get("product") ||
+    params.get("products");
+
+    if (!rawItems) return;
+
+    cart = rawItems.split(",").map(entry => {
+        const [catalog_object_id, qty] = entry.split(":");
+
+        return {
+            catalog_object_id,
+            qty: Number(qty || 1)
+        };
+    });
+
+    saveCart();
+    renderCart();
+}
+    function hydrateCart(catalogItems) {
+    cart = cart.map(cartItem => {
+
+        let matchedProduct = null;
+        let matchedVariation = null;
+
+        catalogItems.forEach(p => {
+
+            if (p.type === "ITEM") {
+                const itemData = p.item_data;
+                const variations = itemData?.variations || [];
+
+                variations.forEach(v => {
+                    if (v.id === cartItem.catalog_object_id) {
+                        matchedProduct = p;
+                        matchedVariation = v;
+                    }
+                });
+            }
+
+            if (p.type === "ITEM_VARIATION" && p.id === cartItem.catalog_object_id) {
+                matchedProduct = p;
+                matchedVariation = p;
+            }
+        });
+if (!matchedProduct || !matchedVariation) {
+    console.log("HYDRATION FAILED FOR:", cartItem.catalog_object_id);
+}
+        if (!matchedProduct || !matchedVariation) {
+            return cartItem;
+        }
+
+        const itemData = matchedProduct.item_data || {};
+        const variationData =
+            matchedVariation.item_variation_data || {};
+
+        const priceMoney = variationData.price_money || {};
+
+        return {
+            ...cartItem,
+            name: itemData.name || variationData.name || cartItem.name,
+            variantName: variationData.name || "",
+            price: priceMoney.amount || 0,
+            image_url: cartItem.image_url
+        };
+    });
+
+    saveCart();
+    renderCart();
+}
+
+
+    let cart = JSON.parse(
+    localStorage.getItem("smitten_cart") || "[]"
+);
+    
+    function saveCart() {
+    localStorage.setItem(
+        "smitten_cart",
+        JSON.stringify(cart)
+    );
+}
+    
+function addToCart(item) {
+
+    const existing = cart.find(i =>
+        i.catalog_object_id === item.catalog_object_id
+    );
+
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({
+            catalog_object_id: item.catalog_object_id,
+            name: item.name,
+            price: item.price,
+            qty: 1
+        });
+    }
+
+    renderCart();
+    saveCart();
+}
+async function copyProductLink(catalogId) {
+
+    const url =
+        window.location.origin +
+        `/fbcheckout?items=${catalogId}:1`;
+
+    try {
+        await navigator.clipboard.writeText(url);
+
+        alert("Product link copied!");
+
+    } catch (err) {
+        console.error(err);
+        alert(url);
+    }
+}
+function renderCart() {
+
+    const container = document.getElementById("cart");
+    container.innerHTML = "";
+    
+    cart.forEach((i, index) => {
+        const div = document.createElement("div");
+        div.className = "cart-row";        
+
+        const price = i.price
+            ? `$${((i.price * i.qty) / 100).toFixed(2)}`
+            : "";
+      
+        const productLink = i.name
+    ? `https://www.thesmittenboutique.com/s/search?q=${encodeURIComponent(i.name)}`
+    : "https://www.thesmittenboutique.com";
+
+const displayName = i.name || i.catalog_object_id;
+const variantInfo = i.variantName && i.variantName !== "Regular"
+    ? i.variantName
+    : "";
+       
+div.innerHTML = `
+    <div class="cart-info">
+        <a class="cart-title" href="${productLink}" target="_blank">
+            ${displayName}
+        </a>
+
+        ${variantInfo ? `<div class="variant-info">${variantInfo}</div>` : ""}
+
+        <span class="price">${price}</span>
+    </div>
+
+    <div class="qty-controls">
+        <button class="qty-btn" onclick="decreaseQty(${index})">-</button>
+        <span>${i.qty}</span>
+        <button class="qty-btn" onclick="increaseQty(${index})">+</button>
+    </div>
+`;
+
+        container.appendChild(div);
+    });
+
+    updateSubtotal();
+
+document.getElementById("continue").disabled = cart.length === 0;
+    
+}
+
+function increaseQty(index) {
+
+    cart[index].qty += 1;
+
+    renderCart();
+    saveCart();
+}
+
+function decreaseQty(index) {
+
+    cart[index].qty -= 1;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    renderCart();
+    saveCart();
+}
+    
+function getCouponCode() {
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+        params.get("coupon") ||
+        params.get("discount") ||
+        params.get("promo")
+    );
+}
+
+function updateSubtotal() {
+    const subtotal = cart.reduce((sum, item) => {
+        return sum + ((item.price || 0) * item.qty);
+    }, 0);
+
+    const coupon = getCouponCode();
+
+const couponPercentages = {
+    WELCOME: 10
+};
+
+const percent = coupon
+    ? couponPercentages[coupon.toUpperCase()]
+    : null;
+
+const discount = percent
+    ? Math.round(subtotal * (percent / 100))
+    : 0;
+
+const shippingNote =
+    coupon?.toUpperCase() === "VIPSHIP"
+        ? `
+            <div style="color:#c5aa78;">
+                VIPSHIP applied at checkout
+            </div>
+        `
+        : "";
+
+    document.getElementById("subtotal").innerHTML =
+    cart.length
+        ? `
+            <div>
+                Subtotal: $${(subtotal / 100).toFixed(2)}
+            </div>
+
+            ${
+                discount
+                    ? `
+                        <div style="color: #c5aa78;">
+                            Discount: -$${(discount / 100).toFixed(2)}
+                        </div>
+                    `
+                    : ""
+            }
+${shippingNote}
+            <div style="font-size: 13px;">
+                Tax calculated at checkout
+            </div>
+        `
+        : "";
+}
+
+    function productUrlFromName(name) {
+    const slug = name
+        .toLowerCase()
+        .replaceAll("&", "and")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    return `https://www.thesmittenboutique.com/product/${slug}`;
+}
+    
+document.getElementById("continue").onclick = async () => {
+    const params = new URLSearchParams(window.location.search);
+    
+    const checkoutButton = document.getElementById("continue");
+    checkoutButton.disabled = true;
+    checkoutButton.innerText = "Preparing checkout...";
+
+    if (cart.length === 0) {
+        alert("Your cart is empty");
+        checkoutButton.disabled = false;
+        checkoutButton.innerText = "Continue to Checkout";
+        return;
+    }
+    console.log("BUTTON CLICKED");
+
+    try {
+
+        const res = await fetch("/api/create-checkout", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+body: JSON.stringify({
+    source: params.get("source"),
+    campaign: params.get("campaign"),
+    coupon: params.get("coupon") || params.get("discount") || params.get("promo"),
+
+    items: cart.map(i => ({
+                    catalog_object_id: i.catalog_object_id,
+                    quantity: i.qty
+                }))
+            })
+        });
+
+        console.log("STATUS:", res.status);
+
+        const data = await res.json();
+
+        console.log(data);
+
+        if (data.success) {
+    sessionStorage.setItem(
+        "checkout_started",
+        "true"
+    );
+
+    window.location.href = data.checkout_url;
+} else {
+
+            alert("Checkout failed: " + (data.error || "Please try again."));
+            checkoutButton.disabled = false;
+            checkoutButton.innerText = "Continue to Checkout";
+        }
+
+    } catch (err) {
+        checkoutButton.disabled = false;
+        checkoutButton.innerText = "Continue to Checkout";
+        console.error("FETCH ERROR:", err);
+    }
+};
+
+saveCart();
+preloadCartFromUrl();
+loadCatalog();
+    
+</script>
+
+    <footer class="site-footer">
+    <div>Thank you for shopping Smitten</div>
+<div class="checkout-note">
+    Secure checkout powered by Square
+</div>
+</footer>
+
+</body>
+</html>
