@@ -521,48 +521,45 @@ console.log("QUERY PARAMS:", Object.fromEntries(
     function hydrateCart(catalogItems) {
     cart = cart.map(cartItem => {
 
-        const product = catalogItems.find(p => {
+        let matchedProduct = null;
+        let matchedVariation = null;
 
-    const itemData = p.item_data;
-    const variation = itemData?.variations?.[0];
+        catalogItems.forEach(p => {
 
-    return (
-        p.id === cartItem.catalog_object_id ||
-        p.catalog_object_id === cartItem.catalog_object_id ||
-        variation?.id === cartItem.catalog_object_id ||
-        itemData?.product_type === cartItem.catalog_object_id ||
-        itemData?.name === cartItem.catalog_object_id
-    );
-});
-if (!product) {
-    console.log("NO MATCH FOR CART ITEM:", cartItem.catalog_object_id);
-    console.log("CATALOG IDS:", catalogItems.map(p => ({
-        itemId: p.id,
-        variationId: p.item_data?.variations?.[0]?.id,
-        name: p.item_data?.name
-    })));
-}
-        if (!product) return cartItem;
+            if (p.type === "ITEM") {
+                const itemData = p.item_data;
+                const variations = itemData?.variations || [];
 
-        if (product.item_data) {
-            const variation = product.item_data.variations?.[0];
-            const priceMoney = variation?.item_variation_data?.price_money || {};
-            const variationData = variation?.item_variation_data || {};
+                variations.forEach(v => {
+                    if (v.id === cartItem.catalog_object_id) {
+                        matchedProduct = p;
+                        matchedVariation = v;
+                    }
+                });
+            }
 
-            return {
-                ...cartItem,
-                name: product.item_data.name,
-                variantName: variationData.name || "",
-                price: priceMoney.amount || 0,
-                image_url: product.image_url || cartItem.image_url
-            };
+            if (p.type === "ITEM_VARIATION" && p.id === cartItem.catalog_object_id) {
+                matchedProduct = p;
+                matchedVariation = p;
+            }
+        });
+
+        if (!matchedProduct || !matchedVariation) {
+            return cartItem;
         }
+
+        const itemData = matchedProduct.item_data || {};
+        const variationData =
+            matchedVariation.item_variation_data || {};
+
+        const priceMoney = variationData.price_money || {};
 
         return {
             ...cartItem,
-            name: product.name || cartItem.name,
-            price: product.price || cartItem.price || 0,
-            image_url: product.image_url || cartItem.image_url
+            name: itemData.name || variationData.name || cartItem.name,
+            variantName: variationData.name || "",
+            price: priceMoney.amount || 0,
+            image_url: cartItem.image_url
         };
     });
 
