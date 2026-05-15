@@ -707,10 +707,17 @@ function updateSubtotal() {
     }, 0);
 
     const coupon = getCouponCode();
-    const discount =
-        coupon && coupon.toUpperCase() === "WELCOME"
-            ? Math.round(subtotal * 0.10)
-            : 0;
+const couponPercentages = {
+    WELCOME: 10
+};
+    const shippingNote =
+    coupon?.toUpperCase() === "VIPSHIP"
+        ? `
+            <div style="color:#c5aa78;">
+                VIPSHIP applied at checkout
+            </div>
+        `
+        : "";
 
     const total = subtotal - discount;
 
@@ -730,7 +737,7 @@ function updateSubtotal() {
                     `
                     : ""
             }
-
+${shippingNote}
             <div style="font-size: 13px;">
                 Tax calculated at checkout
             </div>
@@ -820,7 +827,9 @@ loadCatalog();
 
     <footer class="site-footer">
     <div>Thank you for shopping Smitten</div>
-    <a href="https://www.thesmittenboutique.com">Return to boutique</a>
+    <a href="https://www.thesmittenboutique.com"
+        style="color: #c5aa78;">
+        Return to boutique</a>
 </footer>
 
 </body>
