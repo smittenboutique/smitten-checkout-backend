@@ -144,25 +144,31 @@
 
 .cart-info {
     flex: 1;
+    line-height: 1.65;
 }
 
 .cart-title {
     color: #2f2a25;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 400;
+    display: inline-block;
+    margin-bottom: 2px;
 }
-
+    
 .variant-info {
-    color: #8a7466;
+    color: #2f2a25;
     font-size: 13px;
-    margin-top: 4px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    font-weight: 400;
 }
 
     .price {
-        margin: 8px 0 14px;
-        font-family: 'Brandon Grotesque', sans-serif;
-        color: #7d6658;
-    }
+    display: block;
+    margin-top: 6px;
+    color: #2f2a25;
+    font-weight: 400;
+}
 
     button {
         border: 1px solid #2f2a25;
@@ -186,20 +192,31 @@
     .qty-controls {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         margin-top: 10px;
     }
 
-    .qty-controls button {
-            background: #c5aa78;
-    color: white;
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    }
+    .qty-controls button,
+.qty-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+
+    padding: 0 !important;
+    line-height: 1 !important;
+
+    background: #c5aa78 !important;
+    color: white !important;
+    border: 0 !important;
+
+    border-radius: 50% !important;
+
+    font-size: 16px !important;
+}
 
     .product-image {
     width: 100%;
@@ -278,9 +295,13 @@
         padding: 16px;
     }
 
-    .cart-row {
-        display: block;
-    }
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 24px 0;
+    border-bottom: 1px solid #eadfd5;
+}
 
     .qty-controls {
         margin-top: 14px;
