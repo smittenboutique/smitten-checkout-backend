@@ -8,7 +8,29 @@ import java.util.*;
 
 @Service
 public class SquareCheckoutService {
+private Map<String, Object> discountForCoupon(String coupon) {
 
+    if (coupon == null || coupon.isBlank()) {
+        return null;
+    }
+
+    String code = coupon.trim().toUpperCase();
+
+    switch (code) {
+
+        case "WELCOME":
+            return Map.of(
+                    "uid", "WELCOME",
+                    "name", "WELCOME 10% OFF",
+                    "type", "FIXED_PERCENTAGE",
+                    "percentage", "10",
+                    "scope", "ORDER"
+            );
+
+        default:
+            return null;
+    }
+}
     private String squareBaseUrl() {
         String env = System.getenv("SQUARE_ENV");
 
@@ -164,7 +186,9 @@ if (imageId != null) {
             order.put("line_items", lineItems);
             
 String coupon = (String) body.get("coupon");
-
+boolean freeShipping =
+        "VIPSHIP".equalsIgnoreCase(coupon);
+            
 if ("WELCOME".equalsIgnoreCase(coupon)) {
     order.put("discounts", List.of(
         Map.of(
@@ -174,6 +198,12 @@ if ("WELCOME".equalsIgnoreCase(coupon)) {
             "percentage", "10",
             "scope", "ORDER"
         )
+    ));
+}
+            if (freeShipping) {
+
+    order.put("metadata", Map.of(
+            "free_shipping_coupon", "VIPSHIP"
     ));
 }
             
