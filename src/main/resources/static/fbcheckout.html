@@ -14,21 +14,24 @@
 
 .site-header {
     background: black;
-    height: 150px;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
     
 .header-logo{
-    height: 92px;
-    width: auto;
+    width: 88vw;
+    max-width: 760px;
+    height: auto;
 }
     
     
 .logo-wrap {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
     text-decoration: none;
 }
     
@@ -46,7 +49,8 @@
     font-size: clamp(22px, 3vw, 34px);
     font-weight: 600;
     letter-spacing: .18em;
-    line-height: 1.55;
+    line-height: 1.35;
+    padding: 20px 40px;
     text-transform: uppercase;
 
     cursor: pointer;
@@ -67,6 +71,7 @@
 
 .page {
     min-height: calc(100vh - 230px);
+    gap: 22px;
 
     display: flex;
     flex-direction: column;
@@ -99,12 +104,25 @@
         color: #2f2a25;
     }
 
+.checkout-note {
+    font-size: clamp(22px, 3vw, 34px);
+    line-height: 1.45;
+    color: #2f2a25;
+}
+
     #status {
         text-align: center;
         font-family: 'Brandon Grotesque', sans-serif;
         color: #8a7466;
         margin-bottom: 20px;
     }
+
+.butterfly-mark {
+    width: 28px;
+    height: auto;
+    margin-top: 48px;
+    display: block;
+}
 
 @media (max-width: 640px) {
     .site-header {
@@ -115,10 +133,6 @@
     .logo-wrap {
         width: 100%;
         justify-content: center;
-    }
-
-    .header-logo {
-        height: 92px;
     }
 
     .page {
@@ -136,17 +150,18 @@
         letter-spacing: .18em;
     }
 
-    .checkout-note {
-        font-size: 15px;
-        line-height: 1.7;
-        letter-spacing: .04em;
-        color: #2f2a25;
-    }
+.checkout-note {
+    font-size: 18px;
+    line-height: 1.45;
+    color: #2f2a25;
+}
 
-    .butterfly-mark {
-        width: 26px;
-        margin-top: 70px;
-    }
+.butterfly-mark {
+    width: 22px;
+    height: auto;
+    margin-top: 60px;
+    display: block;
+}
 
     .site-footer {
         background: black;
@@ -345,7 +360,6 @@ document.getElementById("continue").onclick = async () => {
         checkoutButton.innerHTML = "Continue to<br/>Checkout";
         return;
     }
-    console.log("BUTTON CLICKED");
 
     try {
 
@@ -369,11 +383,7 @@ body: JSON.stringify({
             })
         });
 
-        console.log("STATUS:", res.status);
-
         const data = await res.json();
-
-        console.log(data);
 
         if (data.success) {
     sessionStorage.setItem(
