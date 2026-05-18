@@ -169,6 +169,69 @@
         border-radius: 999px;
     }
 }
+    @media (max-width: 640px) {
+
+    body {
+        background: white;
+    }
+
+    .site-header {
+        min-height: 150px;
+        padding: 28px 18px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo-image {
+        height: 72px;
+    }
+
+    .site-header nav {
+        display: none;
+    }
+
+    .page {
+        min-height: calc(100vh - 260px);
+        padding: 56px 22px;
+        justify-content: center;
+        gap: 22px;
+    }
+
+    #continue {
+        width: 100%;
+        max-width: 360px;
+        padding: 18px 24px;
+        font-size: 12px;
+        letter-spacing: .16em;
+        margin-top: 0;
+        position: static;
+    }
+
+    .checkout-note {
+        max-width: 280px;
+        font-size: 11px;
+        line-height: 1.7;
+        letter-spacing: .12em;
+        color: #8a7466;
+    }
+
+    .butterfly-mark {
+        display: block;
+        margin-top: 34px;
+        width: 42px;
+        opacity: .75;
+    }
+
+    .site-footer {
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 18px;
+        text-align: center;
+    }
+}
 </style>
 </head>
 
@@ -196,7 +259,13 @@
     Taking you to secure checkout...
 </div>
 
-<!-- your script stays here -->
+<img
+    class="butterfly-mark"
+    src="/images/butterfly.png"
+    alt="...a sweet boutique"
+/>
+
+<!-- script stays here -->
 
 </div>
 <script>
