@@ -169,22 +169,26 @@
         border-radius: 999px;
     }
 }
-    @media (max-width: 640px) {
+@media (max-width: 640px) {
 
     body {
         background: white;
     }
 
     .site-header {
-        min-height: 150px;
-        padding: 28px 18px;
+        padding: 34px 20px;
         justify-content: center;
-        align-items: center;
         text-align: center;
     }
 
+    .logo-wrap {
+        width: 100%;
+        justify-content: center;
+    }
+
     .logo-image {
-        height: 72px;
+        height: 82px;
+        margin: 0 auto;
     }
 
     .site-header nav {
@@ -192,44 +196,46 @@
     }
 
     .page {
-        min-height: calc(100vh - 260px);
-        padding: 56px 22px;
-        justify-content: center;
-        gap: 22px;
+        padding: 72px 24px 80px;
+        gap: 26px;
     }
 
     #continue {
         width: 100%;
-        max-width: 360px;
-        padding: 18px 24px;
-        font-size: 12px;
-        letter-spacing: .16em;
+        max-width: 100%;
+
+        padding: 22px 28px;
+
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: .18em;
+
+        border-radius: 999px;
+
         margin-top: 0;
-        position: static;
     }
 
     .checkout-note {
-        max-width: 280px;
-        font-size: 11px;
-        line-height: 1.7;
-        letter-spacing: .12em;
+        font-size: 13px;
+        line-height: 1.8;
+        letter-spacing: .08em;
+        text-transform: uppercase;
         color: #8a7466;
+
+        max-width: 320px;
+        margin: 0 auto;
     }
 
     .butterfly-mark {
-        display: block;
-        margin-top: 34px;
-        width: 42px;
-        opacity: .75;
+        width: 18px;
+        margin-top: 8px;
+        opacity: .7;
     }
 
     .site-footer {
-        min-height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px 18px;
+        padding: 28px 18px;
         text-align: center;
+        font-size: 11px;
     }
 }
 </style>
